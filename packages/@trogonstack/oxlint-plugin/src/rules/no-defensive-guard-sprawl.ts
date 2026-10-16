@@ -18,6 +18,29 @@ function functionName(node: FunctionNode): string | null {
   if (parent.type === 'VariableDeclarator' && parent.id.type === 'Identifier')
     return parent.id.name;
   if (parent.type === 'Property' && parent.key.type === 'Identifier') return parent.key.name;
+  if (parent.type === 'MethodDefinition' || parent.type === 'PropertyDefinition')
+    return classMemberName(parent);
+  if (parent.type === 'AssignmentExpression' && parent.right === node)
+    return assignmentTargetName(parent.left);
+  return null;
+}
+
+function classMemberName(
+  member: ESTree.MethodDefinition | ESTree.PropertyDefinition,
+): string | null {
+  if (member.computed) return null;
+  const key = member.key;
+  return key.type === 'Identifier' || key.type === 'PrivateIdentifier' ? key.name : null;
+}
+
+function assignmentTargetName(target: ESTree.Node): string | null {
+  if (target.type === 'Identifier') return target.name;
+  if (
+    target.type === 'MemberExpression' &&
+    !target.computed &&
+    target.property.type === 'Identifier'
+  )
+    return target.property.name;
   return null;
 }
 

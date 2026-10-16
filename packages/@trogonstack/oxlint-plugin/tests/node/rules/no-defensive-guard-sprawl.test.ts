@@ -15,6 +15,11 @@ tester.run('trogonstack/no-defensive-guard-sprawl', noDefensiveGuardSprawlRule, 
       code: 'function parseUser(input) { if (!isRecord(input)) return null; if (input.id == null) return null; if (input.email == null) return null; return input; }',
       options: [{ maxGuards: 3 }],
     },
+    "class Service { assertUserPayload(input) { if (!isRecord(input)) throw new Error('bad'); if (input.id == null) throw new Error('bad'); if (input.email == null) throw new Error('bad'); } }",
+    "class Service { static validateUser(input) { if (!isRecord(input)) throw new Error('bad'); if (input.id == null) throw new Error('bad'); if (input.email == null) throw new Error('bad'); } }",
+    "class Service { assertUser = (input) => { if (!isRecord(input)) throw new Error('bad'); if (input.id == null) throw new Error('bad'); if (input.email == null) throw new Error('bad'); }; }",
+    "class Service { #isValid(input) { if (!isRecord(input)) throw new Error('bad'); if (input.id == null) throw new Error('bad'); if (input.email == null) throw new Error('bad'); } }",
+    "const target = {}; target.isValid = function (input) { if (!isRecord(input)) throw new Error('bad'); if (input.id == null) throw new Error('bad'); if (input.email == null) throw new Error('bad'); };",
   ],
   invalid: [
     {
@@ -28,6 +33,10 @@ tester.run('trogonstack/no-defensive-guard-sprawl', noDefensiveGuardSprawlRule, 
     {
       code: 'function parseUser(input) { if (!isRecord(input)) return null; if (input.id == null) return null; return input; }',
       options: [{ maxGuards: 1 }],
+      errors: [error],
+    },
+    {
+      code: "class Service { parseUser(input) { if (!isRecord(input)) throw new Error('bad'); if (input.id == null) throw new Error('bad'); if (input.email == null) throw new Error('bad'); } }",
       errors: [error],
     },
   ],

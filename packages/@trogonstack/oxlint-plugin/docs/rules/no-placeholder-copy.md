@@ -8,7 +8,7 @@ Disallow placeholder copy in user-facing strings.
 
 ## Detection
 
-Checks JSX text, user-facing JSX attributes (`aria-label`, `alt`, `label`, `placeholder`, `title`), and object properties commonly bound to UI copy (`title`, `description`, `subtitle`, `label`, `placeholder`, `emptyMessage`, `heading`) against `settings.trogonstack.placeholderPatterns` (default: `coming soon`, `todo`, `tbd`, `lorem ipsum`, `placeholder`). Matching ignores case and succeeds when the string contains a pattern.
+Checks JSX text, string literals in JSX child expressions (`<p>{'Coming soon'}</p>`), user-facing JSX attributes (`aria-label`, `alt`, `label`, `placeholder`, `title`) including values wrapped in an expression container (`placeholder={'Coming soon'}`), and object properties commonly bound to UI copy (`title`, `description`, `subtitle`, `label`, `placeholder`, `emptyMessage`, `heading`) against `settings.trogonstack.placeholderPatterns` (default: `coming soon`, `todo`, `tbd`, `lorem ipsum`, `placeholder`). Matching ignores case and succeeds when the string contains a pattern.
 
 ## Examples
 

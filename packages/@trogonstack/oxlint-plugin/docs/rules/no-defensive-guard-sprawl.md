@@ -10,7 +10,7 @@ Stacked `if (x == null) return null;` guards at the top of every function obscur
 
 Flags functions whose bodies open with more than `maxGuards` consecutive `if` statements without an `else` whose branch only returns or throws, and whose condition tests for a nullish value (`== null`, `=== undefined`, `typeof x === "undefined"`) or calls `isRecord(...)`. Negation and `&&`/`||` combinations of those checks count as well.
 
-Functions named like validators are exempt because they are expected to own repeated checks. The name must start with `is`, `has`, `can`, `should`, `assert`, `ensure`, or `validate` followed by an uppercase letter or underscore, such as `assertUserPayload`. The name comes from the function itself, its variable declarator, or its property key.
+Functions named like validators are exempt because they are expected to own repeated checks. The name must start with `is`, `has`, `can`, `should`, `assert`, `ensure`, or `validate` followed by an uppercase letter or underscore, such as `assertUserPayload`. The name comes from the function itself, its variable declarator, its object property key, its class method or field name (including static and private members, where the leading `#` is not part of the name), or the assignment target it is assigned to, such as `this.isValid = function () {}`. Computed keys are ignored.
 
 ## Examples
 

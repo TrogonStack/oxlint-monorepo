@@ -10,7 +10,7 @@ Discourage generic marketing copy in product UI strings.
 
 User-facing strings are matched against `settings.trogonstack.marketingPatterns` (default: `powerful`, `seamless`, `unlock`, `supercharge`). Matching ignores case and succeeds when the string contains a pattern.
 
-A string is user-facing when it is JSX text, the value of an `aria-label`, `alt`, `label`, `placeholder`, or `title` attribute, or the value of an object property named `title`, `description`, `subtitle`, `label`, `placeholder`, `emptyMessage`, or `heading`. Strings elsewhere, such as plain variables, are ignored.
+A string is user-facing when it is JSX text, a string literal in a JSX child expression (`<p>{'Unlock insights'}</p>`), the value of an `aria-label`, `alt`, `label`, `placeholder`, or `title` attribute (including `alt={'...'}` expression containers), or the value of an object property named `title`, `description`, `subtitle`, `label`, `placeholder`, `emptyMessage`, or `heading`. Strings elsewhere, such as plain variables, are ignored.
 
 ## Examples
 

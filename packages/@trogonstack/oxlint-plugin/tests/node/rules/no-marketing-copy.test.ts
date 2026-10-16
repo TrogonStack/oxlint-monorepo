@@ -12,6 +12,9 @@ tester.run('trogonstack/no-marketing-copy', noMarketingCopyRule, {
     {
       code: "const message = 'unlock powerful internals';",
     },
+    {
+      code: "export function View() { return <div className={'unlock powerful'} />; }",
+    },
   ],
   invalid: [
     {
@@ -20,6 +23,18 @@ tester.run('trogonstack/no-marketing-copy', noMarketingCopyRule, {
     },
     {
       code: 'const copy = { description: `Supercharge payroll` };',
+      errors: [{ messageId: 'marketing' }],
+    },
+    {
+      code: "export function View() { return <img alt={'Unlock powerful insights'} />; }",
+      errors: [{ messageId: 'marketing' }],
+    },
+    {
+      code: 'export function View() { return <img alt={`Unlock powerful insights`} />; }',
+      errors: [{ messageId: 'marketing' }],
+    },
+    {
+      code: "export function View() { return <p>{'Unlock powerful insights'}</p>; }",
       errors: [{ messageId: 'marketing' }],
     },
   ],

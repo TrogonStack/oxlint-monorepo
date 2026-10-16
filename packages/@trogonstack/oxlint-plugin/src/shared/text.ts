@@ -38,15 +38,23 @@ export function getLiteralString(node: ESTree.Node | null | undefined): string |
   return null;
 }
 
-/** Reports whether a string node sits where users read it: JSX text, copy attributes, or copy keys. */
+function isUserFacingJsxAttribute(attribute: ESTree.JSXAttribute): boolean {
+  return attribute.name.type === 'JSXIdentifier' && USER_FACING_JSX_ATTRS.has(attribute.name.name);
+}
+
+/** Reports whether a string node sits where users read it: JSX text, JSX child or attribute expressions, copy attributes, or copy keys. */
 export function isLikelyUserFacingString(node: ESTree.Node): boolean {
   const parent = node.parent as ESTree.Node | null;
   if (parent === null) return false;
 
   if (node.type === 'JSXText') return true;
 
-  if (parent.type === 'JSXAttribute') {
-    return parent.name.type === 'JSXIdentifier' && USER_FACING_JSX_ATTRS.has(parent.name.name);
+  if (parent.type === 'JSXAttribute') return isUserFacingJsxAttribute(parent);
+
+  if (parent.type === 'JSXExpressionContainer') {
+    const container = parent.parent as ESTree.Node | null;
+    if (container?.type === 'JSXAttribute') return isUserFacingJsxAttribute(container);
+    return container?.type === 'JSXElement' || container?.type === 'JSXFragment';
   }
 
   if (parent.type === 'Property') {

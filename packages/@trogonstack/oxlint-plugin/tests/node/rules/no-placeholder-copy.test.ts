@@ -15,6 +15,9 @@ tester.run('trogonstack/no-placeholder-copy', noPlaceholderCopyRule, {
     {
       code: 'const copy = { internal: `Coming soon` };',
     },
+    {
+      code: "export function View() { return <input className={'placeholder:text-muted'} />; }",
+    },
   ],
   invalid: [
     {
@@ -31,6 +34,22 @@ tester.run('trogonstack/no-placeholder-copy', noPlaceholderCopyRule, {
     },
     {
       code: "const copy = { title: 'Lorem ipsum dashboard' };",
+      errors: [{ messageId: 'placeholder' }],
+    },
+    {
+      code: "export function View() { return <input placeholder={'Coming soon'} />; }",
+      errors: [{ messageId: 'placeholder' }],
+    },
+    {
+      code: 'export function View() { return <input placeholder={`Coming soon`} />; }',
+      errors: [{ messageId: 'placeholder' }],
+    },
+    {
+      code: "export function View() { return <p>{'Lorem ipsum'}</p>; }",
+      errors: [{ messageId: 'placeholder' }],
+    },
+    {
+      code: 'export function View() { return <p>{`Coming soon`}</p>; }',
       errors: [{ messageId: 'placeholder' }],
     },
   ],

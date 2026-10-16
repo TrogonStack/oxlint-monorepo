@@ -25,19 +25,39 @@ function isCardElement(node: ESTree.JSXElement): boolean {
   return name === 'Card' || name.endsWith('Card') || hasCardClass(node.openingElement);
 }
 
+function renderedChildren(node: ESTree.Node | null | undefined): ESTree.Node[] {
+  if (node === null || node === undefined) return [];
+
+  switch (node.type) {
+    case 'JSXElement':
+    case 'JSXFragment':
+      return [node];
+    case 'JSXExpressionContainer':
+      return renderedChildren(node.expression);
+    case 'LogicalExpression':
+      return [...renderedChildren(node.left), ...renderedChildren(node.right)];
+    case 'ConditionalExpression':
+      return [...renderedChildren(node.consequent), ...renderedChildren(node.alternate)];
+    case 'ParenthesizedExpression':
+    case 'TSAsExpression':
+    case 'TSSatisfiesExpression':
+    case 'TSNonNullExpression':
+    case 'TSTypeAssertion':
+      return renderedChildren(node.expression);
+    default:
+      return [];
+  }
+}
+
 function firstNestedCard(node: ESTree.JSXElement): ESTree.JSXElement | null {
-  const stack: ESTree.Node[] = [...node.children];
+  const stack: ESTree.Node[] = node.children.flatMap(renderedChildren);
   while (stack.length > 0) {
     const current = stack.shift();
     if (current === undefined) continue;
 
-    if (current.type === 'JSXElement') {
-      if (isCardElement(current)) return current;
-      stack.push(...current.children);
-    }
-
-    if (current.type === 'JSXExpressionContainer' && current.expression.type === 'JSXElement') {
-      stack.push(current.expression);
+    if (current.type === 'JSXElement' && isCardElement(current)) return current;
+    if (current.type === 'JSXElement' || current.type === 'JSXFragment') {
+      stack.push(...current.children.flatMap(renderedChildren));
     }
   }
 
