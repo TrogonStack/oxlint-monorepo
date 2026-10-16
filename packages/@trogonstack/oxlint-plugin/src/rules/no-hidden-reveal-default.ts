@@ -45,7 +45,7 @@ function styleHasHiddenReveal(expression: ESTree.Node | null): boolean {
 
 function cssStringHasHiddenReveal(value: string): boolean {
   return (
-    /(?:opacity\s*:\s*0|visibility\s*:\s*hidden)/.test(value) &&
+    /(?:opacity\s*:\s*(?:0+(?:\.0*)?|\.0+)%?(?![\w.%])|visibility\s*:\s*hidden)/.test(value) &&
     /\b(?:animation|transition)\s*:/.test(value)
   );
 }

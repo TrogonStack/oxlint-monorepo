@@ -14,8 +14,18 @@ tester.run('trogonstack/no-hidden-reveal-default', noHiddenRevealDefaultRule, {
     "export function View() { return <section className={hidden ? 'opacity-0' : 'transition-opacity'}>Visible</section>; }",
     "export function View() { return <section className={cx({ 'opacity-0': false, 'transition-opacity': true })}>Visible</section>; }",
     "export function View() { return <section className={cn(false && 'opacity-0', 'transition-opacity')}>Visible</section>; }",
+    "const css = 'opacity: 0.5; transition: opacity .2s';",
+    'const css = `opacity: 0.05; animation: fade 1s`;',
   ],
   invalid: [
+    {
+      code: "const css = 'opacity: 0; transition: opacity .2s';",
+      errors: [{ messageId: 'hiddenReveal' }],
+    },
+    {
+      code: "const css = 'opacity:0.0;animation: fade 1s';",
+      errors: [{ messageId: 'hiddenReveal' }],
+    },
     {
       code: 'export function View() { return <section className="!opacity-0 transition-opacity">Hidden</section>; }',
       errors: [{ messageId: 'hiddenReveal' }],

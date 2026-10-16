@@ -8,6 +8,7 @@ tester.run('trogonstack/no-decorative-grid-background', noDecorativeGridBackgrou
   valid: [
     'export function View() { return <div className="grid grid-cols-2 gap-4" />; }',
     "const blueprintBackground = 'linear-gradient(#eee, #fff)';",
+    "const stripes = 'linear-gradient(90deg, #eee 11px, transparent 21px)';",
   ],
   invalid: [
     {

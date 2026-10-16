@@ -12,7 +12,7 @@ function hasDecorativeGrid(value: string): boolean {
   const text = value.toLowerCase();
   return (
     text.includes('linear-gradient') &&
-    text.includes('1px') &&
+    /(?<![\w.])1px/.test(text) &&
     (text.includes('90deg') || (text.match(/linear-gradient/g)?.length ?? 0) > 1)
   );
 }
