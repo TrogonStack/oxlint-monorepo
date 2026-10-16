@@ -23,22 +23,42 @@ function isRouteFile(directories: readonly string[]): boolean {
   );
 }
 
+function isInside(directory: readonly string[], scope: readonly string[]): boolean {
+  return scope.every((segment, index) => directory[index] === segment);
+}
+
+function visibilityScope(
+  owner: readonly string[],
+  categories: ReadonlySet<string>,
+): readonly string[] {
+  if (owner.length < 2) return owner;
+  const category = owner.at(-2) ?? '';
+  const name =
+    owner[0] === 'app' && category.startsWith(PRIVATE_DIRECTORY_PREFIX)
+      ? category.slice(PRIVATE_DIRECTORY_PREFIX.length)
+      : category;
+  const isNested = owner[0] === 'app' ? category !== name : owner.length > 1;
+  return isNested && categories.has(name) ? owner.slice(0, -2) : owner;
+}
+
 function displayDirectory(directory: readonly string[]): string {
   return ['src', ...directory].join('/');
 }
 
-export const noHoistedModulesRule = defineRule({
+export const requireColocatedModulesRule = defineRule({
   meta: {
     type: 'suggestion',
     docs: {
-      url: ruleDocsUrl('no-hoisted-modules'),
+      url: ruleDocsUrl('require-colocated-modules'),
       description:
-        'Disallow modules that sit in a fractal directory higher than the one every consumer lives in.',
+        'Require modules to sit in the closest fractal directory that contains every consumer, neither higher nor lower.',
     },
     schema: [],
     messages: {
       hoisted:
         'Only `{{users}}` uses this module. Move it into `{{target}}` instead of `{{owner}}`.',
+      buried:
+        'This module is used outside `{{scope}}`. Move it into `{{target}}` instead of `{{owner}}`.',
     },
   },
   createOnce(context) {
@@ -66,14 +86,33 @@ export const noHoistedModulesRule = defineRule({
         const isDeeper =
           target.length > owner.length &&
           owner.every((segment, index) => target[index] === segment);
-        if (!isDeeper) return;
+        if (isDeeper) {
+          context.report({
+            node,
+            messageId: 'hoisted',
+            data: {
+              users: target.join('/'),
+              target: displayDirectory(target),
+              owner: displayDirectory(owner),
+            },
+          });
+          return;
+        }
 
+        const scope = visibilityScope(owner, categories);
+        const escapes = importers.some((importer) => !isInside(importer.slice(0, -1), scope));
+        if (!escapes) return;
+
+        const buriedTarget = nearestFractalDirectory(
+          commonPrefix([scope, ...importers.map((importer) => importer.slice(0, -1))]),
+          categories,
+        );
         context.report({
           node,
-          messageId: 'hoisted',
+          messageId: 'buried',
           data: {
-            users: target.join('/'),
-            target: displayDirectory(target),
+            scope: displayDirectory(scope),
+            target: displayDirectory(buriedTarget),
             owner: displayDirectory(owner),
           },
         });
