@@ -1,3 +1,6 @@
+import { statSync } from 'node:fs';
+import { join } from 'node:path';
+
 const SOURCE_DIRECTORY = 'src';
 
 export interface SourcePath {
@@ -73,4 +76,13 @@ export function resolveSourceImport(
   if (alias === undefined) return null;
   const segments = normalizeSegments(splitPath(specifier.slice(alias.length)));
   return segments === null || segments.length === 0 ? null : { root: importer.root, segments };
+}
+
+/** Tells whether the path names an existing directory on disk under its `src` root. */
+export function isSourceDirectory(path: SourcePath): boolean {
+  try {
+    return statSync(join(path.root, ...path.segments)).isDirectory();
+  } catch {
+    return false;
+  }
 }

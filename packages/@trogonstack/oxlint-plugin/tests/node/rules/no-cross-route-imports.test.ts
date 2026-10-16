@@ -144,3 +144,43 @@ tester.run('trogonstack/no-cross-route-imports', noCrossRouteImportsRule, {
     },
   ],
 });
+
+const fixtures = `${import.meta.dirname}/../../fixtures/cross-route-imports`;
+const fixtureTester = new RuleTester({
+  cwd: fixtures,
+  languageOptions: { parserOptions: { lang: 'tsx' } },
+});
+const checkout = `${fixtures}/src/app/checkout/page.tsx`;
+
+fixtureTester.run('trogonstack/no-cross-route-imports directories', noCrossRouteImportsRule, {
+  valid: [
+    {
+      code: "import x from '../checkout';",
+      filename: `${fixtures}/src/app/checkout/payment/page.tsx`,
+    },
+    { code: "import x from '@/app/checkout';", filename: checkout },
+    { code: "import x from '..';", filename: `${fixtures}/src/app/checkout/payment/page.tsx` },
+  ],
+  invalid: [
+    {
+      code: "import x from '../cart';",
+      filename: checkout,
+      errors: [crossRoute('checkout', 'cart')],
+    },
+    {
+      code: "import x from '@/app/cart';",
+      filename: checkout,
+      errors: [crossRoute('checkout', 'cart')],
+    },
+    {
+      code: "export * from '@/app/(shop)/orders';",
+      filename: checkout,
+      errors: [crossRoute('checkout', '(shop)/orders')],
+    },
+    {
+      code: "const x = await import('@/app/checkout/payment');",
+      filename: checkout,
+      errors: [crossRoute('checkout', 'checkout/payment')],
+    },
+  ],
+});

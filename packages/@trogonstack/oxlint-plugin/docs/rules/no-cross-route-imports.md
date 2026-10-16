@@ -12,7 +12,7 @@ The rule applies when both the importing file and the resolved import target are
 
 An import is allowed when the target route equals or is an ancestor of the importing route. Anything else is reported, naming both routes (`/` is the root route).
 
-Checked sources are `import` declarations (including `import type`), `export ... from`, `export * from`, and `import()` with a string literal. Relative specifiers and specifiers starting with a source alias resolve into `src`. Packages, unresolvable specifiers, and files outside `src/app` are ignored.
+Checked sources are `import` declarations (including `import type`), `export ... from`, `export * from`, and `import()` with a string literal. Relative specifiers and specifiers starting with a source alias resolve into `src`. A specifier that resolves to an existing directory is treated as that directory's index, so importing another route's folder is reported like importing a file inside it. Packages, unresolvable specifiers, and files outside `src/app` are ignored.
 
 ## Examples
 

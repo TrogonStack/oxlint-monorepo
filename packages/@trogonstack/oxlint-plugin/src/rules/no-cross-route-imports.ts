@@ -4,7 +4,9 @@ import { formatRoute, routeSegments } from '../shared/app-routes.ts';
 import { ruleDocsUrl } from '../shared/docs.ts';
 import { importSourceVisitors } from '../shared/module-directives.ts';
 import { getTrogonstackSettings } from '../shared/plugin-settings.ts';
-import { resolveSourceImport, sourcePath } from '../shared/source-path.ts';
+import { isSourceDirectory, resolveSourceImport, sourcePath } from '../shared/source-path.ts';
+
+const INDEX_FILE = 'index';
 
 export const noCrossRouteImportsRule = defineRule({
   meta: {
@@ -32,7 +34,11 @@ export const noCrossRouteImportsRule = defineRule({
         getTrogonstackSettings(context).sourceAliases,
       );
       if (target === null) return;
-      const targetRoute = routeSegments(target);
+      const targetRoute = routeSegments(
+        isSourceDirectory(target)
+          ? { ...target, segments: [...target.segments, INDEX_FILE] }
+          : target,
+      );
       if (targetRoute === null) return;
 
       const isSharedAncestor = targetRoute.every(
