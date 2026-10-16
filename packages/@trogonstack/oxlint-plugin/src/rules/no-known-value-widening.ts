@@ -102,7 +102,12 @@ function enclosingFunction(node: ESTree.Node): FunctionExpression | null {
   return null;
 }
 
-function sourceKeyName(sourceCode: SourceCode, key: ESTree.PropertyKey): string {
+function sourceKeyName(
+  sourceCode: SourceCode,
+  member: { readonly key: ESTree.PropertyKey; readonly computed: boolean },
+): string {
+  const key = member.key;
+  if (member.computed) return `[${sourceCode.getText(key)}]`;
   if (key.type === 'Identifier' || key.type === 'PrivateIdentifier') return key.name;
   if (key.type === 'Literal') return String(key.value);
   return sourceCode.getText(key);
@@ -114,7 +119,7 @@ function functionName(sourceCode: SourceCode, owner: FunctionExpression | null):
   const parent = owner.parent;
   if (parent.type === 'VariableDeclarator' && parent.id.type === 'Identifier')
     return parent.id.name;
-  if (parent.type === 'MethodDefinition') return sourceKeyName(sourceCode, parent.key);
+  if (parent.type === 'MethodDefinition') return sourceKeyName(sourceCode, parent);
   return 'anonymous function';
 }
 
@@ -185,7 +190,7 @@ export const noKnownValueWideningRule = defineRule({
         reportFlow(
           node.value,
           targetFromAnnotation(node.typeAnnotation),
-          `property \`${sourceKeyName(context.sourceCode, node.key)}\``,
+          `property \`${sourceKeyName(context.sourceCode, node)}\``,
         );
       },
       AccessorProperty(node) {
@@ -193,7 +198,7 @@ export const noKnownValueWideningRule = defineRule({
         reportFlow(
           node.value,
           targetFromAnnotation(node.typeAnnotation),
-          `property \`${sourceKeyName(context.sourceCode, node.key)}\``,
+          `property \`${sourceKeyName(context.sourceCode, node)}\``,
         );
       },
       AssignmentExpression(node) {

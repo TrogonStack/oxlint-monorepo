@@ -23,6 +23,14 @@ tester.run('trogonstack/no-defensive-guard-sprawl', noDefensiveGuardSprawlRule, 
   ],
   invalid: [
     {
+      code: "const handlers = { [isValid]: function (input) { if (!isRecord(input)) throw new Error('bad'); if (input.id == null) throw new Error('bad'); if (input.email == null) throw new Error('bad'); } };",
+      errors: [error],
+    },
+    {
+      code: "class Service { [assertUser](input) { if (!isRecord(input)) throw new Error('bad'); if (input.id == null) throw new Error('bad'); if (input.email == null) throw new Error('bad'); } }",
+      errors: [error],
+    },
+    {
       code: 'function parseUser(input) { if (!isRecord(input)) return null; if (input.id == null) return null; if (input.email == null) return null; return { id: input.id, email: input.email }; }',
       errors: [error],
     },

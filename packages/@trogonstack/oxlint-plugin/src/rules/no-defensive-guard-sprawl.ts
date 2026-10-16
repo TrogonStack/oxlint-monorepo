@@ -17,7 +17,8 @@ function functionName(node: FunctionNode): string | null {
   const parent = node.parent;
   if (parent.type === 'VariableDeclarator' && parent.id.type === 'Identifier')
     return parent.id.name;
-  if (parent.type === 'Property' && parent.key.type === 'Identifier') return parent.key.name;
+  if (parent.type === 'Property' && !parent.computed && parent.key.type === 'Identifier')
+    return parent.key.name;
   if (parent.type === 'MethodDefinition' || parent.type === 'PropertyDefinition')
     return classMemberName(parent);
   if (parent.type === 'AssignmentExpression' && parent.right === node)
