@@ -12,6 +12,7 @@ export interface TrogonstackSettings {
   readonly clientOnlyImports: readonly string[];
   readonly sourceAliases: readonly string[];
   readonly fractalDirectories: readonly string[];
+  readonly localeParameterAliases: readonly string[];
 }
 
 export const DEFAULT_SETTINGS: TrogonstackSettings = {
@@ -38,6 +39,7 @@ export const DEFAULT_SETTINGS: TrogonstackSettings = {
     'helpers',
     'server',
   ],
+  localeParameterAliases: ['lang', 'lng', 'language', 'languageCode', 'langCode', 'localeCode'],
 };
 
 function isStringList(value: unknown): value is string[] {
@@ -65,5 +67,6 @@ export function getTrogonstackSettings(context: Pick<Context, 'settings'>): Trog
     clientOnlyImports: pick('clientOnlyImports'),
     sourceAliases: pick('sourceAliases'),
     fractalDirectories: pick('fractalDirectories'),
+    localeParameterAliases: pick('localeParameterAliases'),
   };
 }

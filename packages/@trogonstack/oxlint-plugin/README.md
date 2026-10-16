@@ -28,7 +28,7 @@ Register the plugin in `.oxlintrc.json` and enable the rules you want:
 }
 ```
 
-The copy, data, client-boundary and project-structure rules read shared lists from `settings.trogonstack`. `sourceAliases` lists the import prefixes that resolve to `src`, so the structure rules can follow aliased imports. `fractalDirectories` lists the category directories the fractal pattern allows. Each list you set replaces its default:
+The copy, data, client-boundary and project-structure rules read shared lists from `settings.trogonstack`. `sourceAliases` lists the import prefixes that resolve to `src`, so the structure rules can follow aliased imports. `fractalDirectories` lists the category directories the fractal pattern allows. `localeParameterAliases` lists the dynamic segment names that `require-locale-route-parameter` asks to rename to `[locale]`. Each list you set replaces its default:
 
 ```json
 {
@@ -63,6 +63,14 @@ The copy, data, client-boundary and project-structure rules read shared lists fr
         "i18n",
         "helpers",
         "server"
+      ],
+      "localeParameterAliases": [
+        "lang",
+        "lng",
+        "language",
+        "languageCode",
+        "langCode",
+        "localeCode"
       ]
     }
   }
@@ -99,6 +107,7 @@ The structure rules enforce [ADR 5541831634](https://github.com/straw-hat-team/a
 | [`trogonstack/no-private-library-directories`](docs/rules/no-private-library-directories.md)                       | Disallow underscore-prefixed private directories inside libraries under `src/libs`, except `__tests__`.                                            |
 | [`trogonstack/no-reflect-apply`](docs/rules/no-reflect-apply.md)                                                   | Disallow Reflect.apply; call typed functions directly or model dynamic dispatch behind an interface.                                               |
 | [`trogonstack/no-reflect-get`](docs/rules/no-reflect-get.md)                                                       | Disallow Reflect.get; use typed property access or parse dynamic input into a domain type.                                                         |
+| [`trogonstack/no-root-assets-directory`](docs/rules/no-root-assets-directory.md)                                   | Disallow importing from an `assets` directory at the project root instead of `src/assets`.                                                         |
 | [`trogonstack/no-runtime-typeof`](docs/rules/no-runtime-typeof.md)                                                 | Disallow runtime typeof checks; external values must be decoded into meaningful types at their I/O boundary.                                       |
 | [`trogonstack/no-server-action-imports`](docs/rules/no-server-action-imports.md)                                   | Disallow Server Actions from importing or calling other Server Actions.                                                                            |
 | [`trogonstack/no-server-file-suffix`](docs/rules/no-server-file-suffix.md)                                         | Disallow the `.server` file name suffix; server is the default, so name client files `*.client.*` instead.                                         |
@@ -111,10 +120,13 @@ The structure rules enforce [ADR 5541831634](https://github.com/straw-hat-team/a
 | [`trogonstack/no-unsafe-dictionary-type`](docs/rules/no-unsafe-dictionary-type.md)                                 | Disallow object-dictionary contracts whose direct value type is unknown, any, object, {}, or a union/alias containing one of those escape hatches. |
 | [`trogonstack/no-useless-memo`](docs/rules/no-useless-memo.md)                                                     | Discourage trivial useMemo/useCallback usage.                                                                                                      |
 | [`trogonstack/no-widen-then-assert`](docs/rules/no-widen-then-assert.md)                                           | Disallow local const flows that explicitly widen a known value before asserting the widened binding to a narrower type.                            |
+| [`trogonstack/require-app-entry-file`](docs/rules/require-app-entry-file.md)                                       | Require the application entry to be `src/app/index.tsx` instead of `src/main` or `src/index`.                                                      |
+| [`trogonstack/require-client-component-suffix`](docs/rules/require-client-component-suffix.md)                     | Require client components to be named with a `Client` suffix instead of being aliased on import.                                                   |
 | [`trogonstack/require-client-file-suffix`](docs/rules/require-client-file-suffix.md)                               | Require files with a `use client` directive to be named `*.client.*`.                                                                              |
 | [`trogonstack/require-colocated-unit-tests`](docs/rules/require-colocated-unit-tests.md)                           | Require unit tests to sit next to the file they test instead of inside `__tests__`.                                                                |
 | [`trogonstack/require-empty-state-action`](docs/rules/require-empty-state-action.md)                               | Require explicit actions in local empty-state UI blocks.                                                                                           |
 | [`trogonstack/require-fractal-directories`](docs/rules/require-fractal-directories.md)                             | Require every directory under `src` to follow the fractal directory pattern of ADR 5541831634.                                                     |
+| [`trogonstack/require-locale-route-parameter`](docs/rules/require-locale-route-parameter.md)                       | Require the `[locale]` dynamic segment for internationalized routes under `src/app`.                                                               |
 | [`trogonstack/require-private-app-directories`](docs/rules/require-private-app-directories.md)                     | Require fractal directories under `src/app` to be private folders prefixed with an underscore.                                                     |
 | [`trogonstack/require-reduced-motion`](docs/rules/require-reduced-motion.md)                                       | Require a type-matched reduced-motion fallback when static UI code declares motion.                                                                |
 | [`trogonstack/require-safety-comment-for-type-assertion`](docs/rules/require-safety-comment-for-type-assertion.md) | Require a nearby SAFETY comment for every TypeScript type assertion except const assertions.                                                       |
