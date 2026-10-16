@@ -137,10 +137,12 @@ function inlineStaticText(node: JSXChildContainer): string | null {
 function directMessageTexts(node: ESTree.JSXElement): string[] {
   const texts: string[] = [];
   let literalText = '';
+  let interpolated = false;
 
   function flushLiteralText(): void {
-    if (literalText.trim() !== '') texts.push(literalText);
+    if (!interpolated && literalText.trim() !== '') texts.push(literalText);
     literalText = '';
+    interpolated = false;
   }
 
   for (const child of node.children) {
@@ -154,6 +156,8 @@ function directMessageTexts(node: ESTree.JSXElement): string[] {
       if (expressionTexts.length > 0) {
         flushLiteralText();
         texts.push(...expressionTexts);
+      } else if (child.expression.type !== 'JSXEmptyExpression') {
+        interpolated = true;
       }
       continue;
     }

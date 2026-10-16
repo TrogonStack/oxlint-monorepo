@@ -7,6 +7,12 @@ const tester = new RuleTester({ languageOptions: { parserOptions: { lang: 'tsx' 
 tester.run('trogonstack/require-empty-state-action', requireEmptyStateActionRule, {
   valid: [
     {
+      code: 'export function View() { return <section><p>No {count} projects</p></section>; }',
+    },
+    {
+      code: 'export function View() { return <section><p>{name} not found</p></section>; }',
+    },
+    {
       code: 'export function View() { return <section><p>No invoices</p><button>Create invoice</button></section>; }',
     },
     {
@@ -131,6 +137,10 @@ tester.run('trogonstack/require-empty-state-action', requireEmptyStateActionRule
     },
   ],
   invalid: [
+    {
+      code: 'export function View() { return <section><p>{/* empty */}No invoices</p></section>; }',
+      errors: [{ messageId: 'emptyStateAction' }],
+    },
     {
       code: 'export function View() { return <section><p>No invoices</p></section>; }',
       errors: [{ messageId: 'emptyStateAction' }],
