@@ -1,0 +1,10 @@
+{
+  "jsPlugins": ["@trogonstack/oxlint-plugin"],
+  "rules": {
+    "trogonstack/no-placeholder-copy": "error",
+    "trogonstack/require-empty-state-action": "error",
+    "trogonstack/no-useless-memo": "warn",
+    "trogonstack/no-marketing-copy": "warn",
+    "trogonstack/no-generic-stat-label": "warn"
+  }
+}

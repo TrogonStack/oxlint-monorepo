@@ -1,5 +1,5 @@
-// import { useCommented } from '../../hooks/useCommented';
+// import { useCommented } from '../../hooks/use-commented';
 /*
-export { useCommented } from '../../hooks/useCommented';
+export { useCommented } from '../../hooks/use-commented';
 */
 export const note = 1;

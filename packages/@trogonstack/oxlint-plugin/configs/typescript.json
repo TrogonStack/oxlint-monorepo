@@ -1,0 +1,22 @@
+{
+  "jsPlugins": ["@trogonstack/oxlint-plugin"],
+  "rules": {
+    "trogonstack/no-chained-type-assertions": "error",
+    "trogonstack/no-conditional-empty-object-spread": "error",
+    "trogonstack/no-defensive-guard-sprawl": "warn",
+    "trogonstack/no-destructured-parameters": "error",
+    "trogonstack/no-known-value-widening": "error",
+    "trogonstack/no-module-mocking": "error",
+    "trogonstack/no-object-parameters": "error",
+    "trogonstack/no-reflect-apply": "error",
+    "trogonstack/no-reflect-get": "error",
+    "trogonstack/no-runtime-typeof": "error",
+    "trogonstack/no-shape-in-symbol-names": "error",
+    "trogonstack/no-unknown-parameters": "error",
+    "trogonstack/no-unknown-returns": "error",
+    "trogonstack/no-unknown-type-aliases": "error",
+    "trogonstack/no-unsafe-dictionary-type": "error",
+    "trogonstack/no-widen-then-assert": "error",
+    "trogonstack/require-safety-comment-for-type-assertion": "error"
+  }
+}

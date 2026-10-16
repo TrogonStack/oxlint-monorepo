@@ -1,0 +1,13 @@
+{
+  "plugins": ["unicorn"],
+  "jsPlugins": ["@trogonstack/oxlint-plugin"],
+  "rules": {
+    "unicorn/filename-case": [
+      "error",
+      {
+        "case": "kebabCase"
+      }
+    ],
+    "trogonstack/require-kebab-case-directories": "error"
+  }
+}

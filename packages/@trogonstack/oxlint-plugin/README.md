@@ -79,9 +79,30 @@ The copy, data, client-boundary and project-structure rules read shared lists fr
 
 The structure rules enforce [ADR 5541831634](https://github.com/straw-hat-team/adr/blob/main/src/adrs/5541831634/README.md). Circular dependencies between sibling directories and libraries are covered by Oxlint's built-in `import/no-cycle` rule, so these rules do not duplicate it. Relative imports that climb to a parent directory are covered by the built-in `import/no-relative-parent-imports` rule, and `require-import-locality` covers the aliased half of the import style. Re-exports are covered in part by the built-in `oxc/no-barrel-file` rule, which reports barrel files that re-export with `export *`; named re-exports are not reported by it.
 
-### Presets
+### Shareable configs
 
-The package ships Oxlint configs that enable the project-structure rules for a framework, so you do not pick them one by one. Oxlint resolves `extends` as a file path, not as a package specifier, so point it at the file inside `node_modules`:
+The package ships Oxlint configs you extend in one line instead of enabling rules one by one. Oxlint resolves `extends` as a file path, not as a package specifier, so point it at the file inside `node_modules`.
+
+**Building blocks** are the layers the presets are made of. Each one registers the plugin through `jsPlugins` and works on its own:
+
+| Config               | Contents                                                                                                                                                                                                                                                                                                                        |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `structure.json`     | Layout rules that hold in any codebase: `require-colocated-modules`, `require-colocated-css-modules`, `require-colocated-unit-tests`, `require-types-directory`, `no-private-library-directories`, `require-import-locality`, and the built-in `import/no-cycle`, `import/no-relative-parent-imports` and `oxc/no-barrel-file`. |
+| `app-structure.json` | ADR layout rules for an application: `require-fractal-directories`, `require-private-app-directories`, `no-cross-route-imports`, `require-client-file-suffix`, `no-server-file-suffix`, `no-public-path-prefix` and `no-demo-data-primary-path`.                                                                                |
+| `naming.json`        | The built-in `unicorn/filename-case` rule set to `kebabCase`, and `require-kebab-case-directories` for directories.                                                                                                                                                                                                             |
+| `typescript.json`    | Type-safety and code-shape rules, such as `no-reflect-get`, `no-unknown-parameters` and `require-safety-comment-for-type-assertion`.                                                                                                                                                                                            |
+| `react.json`         | Platform-neutral React rules for copy, empty states and memoization: `no-placeholder-copy`, `no-marketing-copy`, `no-generic-stat-label`, `require-empty-state-action` and `no-useless-memo`.                                                                                                                                   |
+| `react-dom.json`     | Web-only styling and motion rules: `no-arbitrary-z-index`, `no-decorative-grid-background`, `no-excessive-radius`, `no-gradient-text`, `no-hidden-reveal-default`, `no-nested-cards`, `no-side-stripe-accent` and `require-reduced-motion`.                                                                                     |
+
+**Presets** compose the building blocks. Extend the one that matches your project:
+
+| Preset               | Composition                                                                                                                                                                                                                                                  |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `library.json`       | `structure`, `naming` and `typescript`.                                                                                                                                                                                                                      |
+| `react-library.json` | `library` and `react`. Use it for a React DOM or React Native component library.                                                                                                                                                                             |
+| `nextjs.json`        | `react-library`, `app-structure` and `react-dom`, plus the App Router rules `no-pages-router`, `no-server-action-imports`, `require-client-component-suffix`, `require-locale-route-parameter`, `require-server-directives` and `no-unjustified-use-client`. |
+| `vite.json`          | `react-library`, `app-structure` and `react-dom`, plus `require-app-entry-file`.                                                                                                                                                                             |
+| `expo.json`          | `react-library` and `app-structure`, plus `no-root-assets-directory`, which the ADR scopes to React Native only. It leaves out `react-dom`.                                                                                                                  |
 
 ```json
 {
@@ -89,17 +110,46 @@ The package ships Oxlint configs that enable the project-structure rules for a f
 }
 ```
 
+A React Native library, which has no app layout, extends `react-library` and not `expo`:
+
 ```json
 {
-  "extends": ["./node_modules/@trogonstack/oxlint-plugin/configs/vite.json"]
+  "extends": ["./node_modules/@trogonstack/oxlint-plugin/configs/react-library.json"]
 }
 ```
 
-Both presets extend `configs/project-structure.json`, which registers the plugin, enables the ADR rules and turns on the built-in `import/no-cycle`, `import/no-relative-parent-imports` and `oxc/no-barrel-file` rules. The structure rules are errors, except `require-import-locality` and the two softer built-ins, which are warnings. The Next.js preset adds the App Router rules, and the Vite preset adds `require-app-entry-file`. Neither preset enables the copy, UI or type-safety rules.
+Rules whose description starts with "Discourage" are warnings, and the rest are errors, except `require-import-locality` and the two softer built-ins, which are warnings. Every plugin rule belongs to exactly one building block or to one framework preset, and a test fails when a new rule is left out.
 
-Oxlint does not merge `settings` from an extended config, so set `settings.trogonstack` in your own `.oxlintrc.json` when you need `sourceAliases` or the other lists above. The presets list the `import` and `oxc` plugins, and Oxlint adds them to its default plugins unless your config sets `plugins` itself.
+To compose your own set, extend the building blocks you want instead of a preset. Extending the same block through several configs is safe, because Oxlint loads the plugin once:
 
-Rules you set in your own config win over the preset, so you can change a severity or turn a rule off:
+```json
+{
+  "extends": [
+    "./node_modules/@trogonstack/oxlint-plugin/configs/typescript.json",
+    "./node_modules/@trogonstack/oxlint-plugin/configs/naming.json"
+  ]
+}
+```
+
+#### Caveats
+
+Oxlint does not merge `settings` from an extended config, so set `settings.trogonstack` in your own `.oxlintrc.json` when you need `sourceAliases` or the other lists above. The configs list the `import`, `oxc` and `unicorn` plugins where they need them, and Oxlint adds them to its default plugins unless your config sets `plugins` itself.
+
+`unicorn/filename-case` accepts the Next.js special files (`page.tsx`, `layout.tsx`, `not-found.tsx`, `route.ts`), dynamic segment folders such as `[slug]`, and suffixes such as `button.client.tsx` and `button.test.tsx`. It reports a dynamic segment file whose parameter is not kebab-case, such as `[userId].tsx`. Ignore those files in your own config; `ignore` takes a list of regular expressions:
+
+```json
+{
+  "extends": ["./node_modules/@trogonstack/oxlint-plugin/configs/nextjs.json"],
+  "rules": {
+    "unicorn/filename-case": [
+      "error",
+      { "case": "kebabCase", "ignore": ["^\\[{1,2}(\\.\\.\\.)?[A-Za-z0-9_-]+\\]{1,2}\\."] }
+    ]
+  }
+}
+```
+
+Rules you set in your own config win over the extended configs, so you can change a severity or turn a rule off:
 
 ```json
 {
@@ -162,6 +212,7 @@ Rules you set in your own config win over the preset, so you can change a severi
 | [`trogonstack/require-empty-state-action`](docs/rules/require-empty-state-action.md)                               | Require explicit actions in local empty-state UI blocks.                                                                                           |
 | [`trogonstack/require-fractal-directories`](docs/rules/require-fractal-directories.md)                             | Require every directory under `src` to follow the fractal directory pattern of ADR 5541831634.                                                     |
 | [`trogonstack/require-import-locality`](docs/rules/require-import-locality.md)                                     | Require relative imports for files in the importing directory or below it, instead of a source alias.                                              |
+| [`trogonstack/require-kebab-case-directories`](docs/rules/require-kebab-case-directories.md)                       | Require every directory under `src` to be kebab-case, allowing framework route and private segments.                                               |
 | [`trogonstack/require-locale-route-parameter`](docs/rules/require-locale-route-parameter.md)                       | Require the `[locale]` dynamic segment for internationalized routes under `src/app`.                                                               |
 | [`trogonstack/require-private-app-directories`](docs/rules/require-private-app-directories.md)                     | Require fractal directories under `src/app` to be private folders prefixed with an underscore.                                                     |
 | [`trogonstack/require-reduced-motion`](docs/rules/require-reduced-motion.md)                                       | Require a type-matched reduced-motion fallback when static UI code declares motion.                                                                |

@@ -45,6 +45,7 @@ import { requireColocatedUnitTestsRule } from './rules/require-colocated-unit-te
 import { requireEmptyStateActionRule } from './rules/require-empty-state-action.ts';
 import { requireFractalDirectoriesRule } from './rules/require-fractal-directories.ts';
 import { requireImportLocalityRule } from './rules/require-import-locality.ts';
+import { requireKebabCaseDirectoriesRule } from './rules/require-kebab-case-directories.ts';
 import { requireLocaleRouteParameterRule } from './rules/require-locale-route-parameter.ts';
 import { requirePrivateAppDirectoriesRule } from './rules/require-private-app-directories.ts';
 import { requireReducedMotionRule } from './rules/require-reduced-motion.ts';
@@ -101,6 +102,7 @@ const trogonstackPlugin = eslintCompatPlugin({
     'require-empty-state-action': requireEmptyStateActionRule,
     'require-fractal-directories': requireFractalDirectoriesRule,
     'require-import-locality': requireImportLocalityRule,
+    'require-kebab-case-directories': requireKebabCaseDirectoriesRule,
     'require-locale-route-parameter': requireLocaleRouteParameterRule,
     'require-private-app-directories': requirePrivateAppDirectoriesRule,
     'require-reduced-motion': requireReducedMotionRule,

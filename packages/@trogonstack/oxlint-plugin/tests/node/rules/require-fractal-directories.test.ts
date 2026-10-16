@@ -18,13 +18,13 @@ tester.run('trogonstack/require-fractal-directories', requireFractalDirectoriesR
     { code: 'export {};', filename: '/repo/src/app/components/page.tsx' },
     { code: 'export {};', filename: '/repo/src/app/_hooks/deep/er/use-x.ts' },
     { code: 'export {};', filename: '/repo/src/app/dashboard/__tests__/setup.ts' },
-    { code: 'export {};', filename: '/repo/src/app/_components/Button/hooks/use-x.ts' },
+    { code: 'export {};', filename: '/repo/src/app/_components/button/hooks/use-x.ts' },
     { code: 'export {};', filename: '/repo/src/app/_storages/local/token.ts' },
     { code: 'export {};', filename: '/repo/src/app/_server/actions/save.ts' },
     { code: 'export {};', filename: '/repo/src/app/_i18n/messages/en.ts' },
-    { code: 'export {};', filename: '/repo/src/components/Button/hooks/use-x.ts' },
-    { code: 'export {};', filename: '/repo/src/components/Button/components/Icon/styles/x.ts' },
-    { code: 'export {};', filename: '/repo/src/components/Button.tsx' },
+    { code: 'export {};', filename: '/repo/src/components/button/hooks/use-x.ts' },
+    { code: 'export {};', filename: '/repo/src/components/button/components/icon/styles/x.ts' },
+    { code: 'export {};', filename: '/repo/src/components/button.tsx' },
     { code: 'export {};', filename: '/repo/src/hooks/components/x.ts' },
     { code: 'export {};', filename: '/repo/src/libs/analytics/services/segment/track.ts' },
     { code: 'export {};', filename: '/repo/src/libs/analytics/__tests__/setup.ts' },
@@ -89,14 +89,14 @@ tester.run('trogonstack/require-fractal-directories', requireFractalDirectoriesR
     },
     {
       code: 'export {};',
-      filename: '/repo/src/components/Button/utils/x.ts',
-      errors: [error('components/Button/utils', 'src/components/Button')],
+      filename: '/repo/src/components/button/utils/x.ts',
+      errors: [error('components/button/utils', 'src/components/button')],
     },
     {
       code: 'export {};',
-      filename: '/repo/src/components/Button/components/Icon/misc/x.ts',
+      filename: '/repo/src/components/button/components/icon/misc/x.ts',
       errors: [
-        error('components/Button/components/Icon/misc', 'src/components/Button/components/Icon'),
+        error('components/button/components/icon/misc', 'src/components/button/components/icon'),
       ],
     },
     {
@@ -106,8 +106,8 @@ tester.run('trogonstack/require-fractal-directories', requireFractalDirectoriesR
     },
     {
       code: 'export {};',
-      filename: '/repo/src/app/_components/Button/_inner/x.ts',
-      errors: [error('app/_components/Button/_inner', 'src/app/_components/Button')],
+      filename: '/repo/src/app/_components/button/_inner/x.ts',
+      errors: [error('app/_components/button/_inner', 'src/app/_components/button')],
     },
     {
       code: 'export {};',

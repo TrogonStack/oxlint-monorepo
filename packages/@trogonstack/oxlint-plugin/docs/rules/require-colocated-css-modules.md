@@ -10,7 +10,7 @@ A CSS Module that sits next to its component is found, changed, and deleted toge
 
 Applies to files under `src`. Checked sources are `import` declarations, `export ... from`, `export * from`, and `import()` with a string literal whose specifier, ignoring any `?query` or `#hash`, ends in `.module.css`, `.module.scss`, `.module.sass`, or `.module.less`.
 
-The component name is the importing file name without its last extension. For a file such as `Button.client.tsx`, both `Button.client` and `Button` are accepted. An import is allowed when it resolves to `<component name>.module.<extension>` in the importing file's own directory. Anything else is reported, including a differently named sibling, a file in another directory, and a nested file.
+The component name is the importing file name without its last extension. For a file such as `button.client.tsx`, both `button.client` and `button` are accepted. An import is allowed when it resolves to `<component name>.module.<extension>` in the importing file's own directory. Anything else is reported, including a differently named sibling, a file in another directory, and a nested file.
 
 Relative specifiers and specifiers starting with a source alias are resolved. An aliased specifier that resolves to the correct sibling is allowed by this rule; use `trogonstack/require-import-locality` to require the relative form. Plain stylesheets that are not CSS Modules, packages, and files outside `src` are ignored.
 
@@ -19,8 +19,8 @@ Relative specifiers and specifiers starting with a source alias are resolved. An
 Invalid:
 
 ```tsx
-// src/components/Button/Button.tsx
-import styles from '../Card/Card.module.css';
+// src/components/button/button.tsx
+import styles from '../card/card.module.css';
 
 export const Button = () => <button className={styles.root} />;
 ```
@@ -28,8 +28,8 @@ export const Button = () => <button className={styles.root} />;
 Invalid, a sibling that belongs to another component:
 
 ```tsx
-// src/components/Button/Button.tsx
-import styles from './Card.module.css';
+// src/components/button/button.tsx
+import styles from './card.module.css';
 
 export const Button = () => <button className={styles.root} />;
 ```
@@ -37,8 +37,8 @@ export const Button = () => <button className={styles.root} />;
 Valid:
 
 ```tsx
-// src/components/Button/Button.tsx
-import styles from './Button.module.css';
+// src/components/button/button.tsx
+import styles from './button.module.css';
 
 export const Button = () => <button className={styles.root} />;
 ```

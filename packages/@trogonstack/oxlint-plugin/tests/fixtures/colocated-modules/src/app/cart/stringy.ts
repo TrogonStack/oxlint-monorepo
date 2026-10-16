@@ -1,4 +1,4 @@
-export const text = "import { useStringy } from '../../hooks/useStringy'";
+export const text = "import { useStringy } from '../../hooks/use-stringy'";
 export const template = `
-export { useStringy } from '../../hooks/useStringy';
+export { useStringy } from '../../hooks/use-stringy';
 `;

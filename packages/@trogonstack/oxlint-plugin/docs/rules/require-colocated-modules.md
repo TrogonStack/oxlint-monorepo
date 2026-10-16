@@ -14,11 +14,11 @@ The rule reads every JavaScript and TypeScript file under the `src` directory on
 
 For a file, the rule takes the files that import it, ignoring unit tests (`*.test.*` and `*.spec.*`), and finds the deepest fractal directory that contains all of them. It reports the file when that directory is strictly deeper than the file's owner and sits inside it. Files that nothing imports are not reported.
 
-The rule also reports a file whose importers reach outside the place where it is visible. The visible scope of a file is its owner, except that an owner ending in a category directory and a name (`_components/Price` under `src/app`, `components/Icon` under another component) is visible from the directory that holds that category, and a top level component such as `src/components/Button` is visible from `src`. The rule reports the file when any importer, ignoring unit tests, lives outside that scope, and suggests the nearest fractal directory that contains the scope and every importer.
+The rule also reports a file whose importers reach outside the place where it is visible. The visible scope of a file is its owner, except that an owner ending in a category directory and a name (`_components/Price` under `src/app`, `components/icon` under another component) is visible from the directory that holds that category, and a top level component such as `src/components/button` is visible from `src`. The rule reports the file when any importer, ignoring unit tests, lives outside that scope, and suggests the nearest fractal directory that contains the scope and every importer.
 
 Route files directly under `src/app` (those outside a private `_` directory), unit tests, and anything under `src/libs`, `src/@types`, or `src/polyfills` are never reported.
 
-Files inside a component directory such as `src/components/Button` belong to that component's own fractal directory, so a component used by a single route is not reported as a whole.
+Files inside a component directory such as `src/components/button` belong to that component's own fractal directory, so a component used by a single route is not reported as a whole.
 
 The project is scanned once, so editors and language server integrations may need a restart to see files that were moved or created after the first lint.
 
@@ -65,11 +65,11 @@ export default function Page() {
 Invalid, a component internal that a route imports directly:
 
 ```tsx
-// src/components/Button/components/Icon/Icon.tsx
+// src/components/button/components/icon/icon.tsx
 export const Icon = () => null;
 
 // src/app/cart/page.tsx
-import { Icon } from '@/components/Button/components/Icon/Icon';
+import { Icon } from '@/components/button/components/icon/icon';
 
 export default function Page() {
   return <Icon />;
@@ -102,14 +102,14 @@ export default function Page() {
 Valid, a component imported from any route and a module private to its route:
 
 ```tsx
-// src/components/Button/Button.tsx
+// src/components/button/button.tsx
 export const Button = () => null;
 
 // src/app/cart/_hooks/use-local.ts
 export const useLocal = () => 1;
 
 // src/app/cart/page.tsx
-import { Button } from '@/components/Button/Button';
+import { Button } from '@/components/button/button';
 import { useLocal } from './_hooks/use-local';
 
 export default function Page() {

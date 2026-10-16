@@ -1,5 +1,5 @@
 {
-  "extends": ["./project-structure.json"],
+  "extends": ["./react-library.json", "./app-structure.json", "./react-dom.json"],
   "rules": {
     "trogonstack/no-pages-router": "error",
     "trogonstack/no-server-action-imports": "error",

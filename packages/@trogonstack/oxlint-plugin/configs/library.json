@@ -1,0 +1,3 @@
+{
+  "extends": ["./structure.json", "./naming.json", "./typescript.json"]
+}

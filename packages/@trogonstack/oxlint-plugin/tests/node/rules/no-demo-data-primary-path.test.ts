@@ -11,7 +11,7 @@ tester.run('trogonstack/no-demo-data-primary-path', noDemoDataPrimaryPathRule, {
       code: "import { rows } from '@/fixtures/rows';\nexport async function Page() { const data = await fetch('/api/rows'); return data; }",
     },
     {
-      filename: '/repo/components/Preview.tsx',
+      filename: '/repo/components/preview.tsx',
       code: "import { rows } from '@/fixtures/rows';\nexport function Preview() { return rows; }",
     },
     {
