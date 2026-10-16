@@ -8,6 +8,9 @@ const error = { messageId: 'arbitraryZIndex' };
 
 tester.run('trogonstack/no-arbitrary-z-index', noArbitraryZIndexRule, {
   valid: [
+    'export function View() { return <div className="md:z-10" />; }',
+    'export function View() { return <div className="hover:z-[50]" />; }',
+    'export function View() { return <div className="[&>*]:z-20" />; }',
     'export function View() { return <div className="z-50" />; }',
     'export function View() { return <div style={{ zIndex: 20 }} />; }',
     "export function View() { return <div className={cn('fixed', false && 'z-[9999]')} />; }",
@@ -23,6 +26,42 @@ tester.run('trogonstack/no-arbitrary-z-index', noArbitraryZIndexRule, {
     },
   ],
   invalid: [
+    {
+      code: 'export function View() { return <div className="md:z-[9999]" />; }',
+      errors: [{ messageId: 'arbitraryZIndex' }],
+    },
+    {
+      code: 'export function View() { return <div className="hover:focus:z-[9999]" />; }',
+      errors: [{ messageId: 'arbitraryZIndex' }],
+    },
+    {
+      code: 'export function View() { return <div className="!z-[9999]" />; }',
+      errors: [{ messageId: 'arbitraryZIndex' }],
+    },
+    {
+      code: 'export function View() { return <div className="z-[9999]!" />; }',
+      errors: [{ messageId: 'arbitraryZIndex' }],
+    },
+    {
+      code: 'export function View() { return <div className="md:!z-[9999]" />; }',
+      errors: [{ messageId: 'arbitraryZIndex' }],
+    },
+    {
+      code: 'export function View() { return <div className="md:z-[9999]!" />; }',
+      errors: [{ messageId: 'arbitraryZIndex' }],
+    },
+    {
+      code: 'export function View() { return <div className="[&>*]:z-[9999]" />; }',
+      errors: [{ messageId: 'arbitraryZIndex' }],
+    },
+    {
+      code: 'export function View() { return <div className="[&:not(:first-child)]:md:z-[9999]" />; }',
+      errors: [{ messageId: 'arbitraryZIndex' }],
+    },
+    {
+      code: 'export function View() { return <div className="md:z-9999" />; }',
+      errors: [{ messageId: 'arbitraryZIndex' }],
+    },
     { code: 'export function View() { return <div className="z-[9999]" />; }', errors: [error] },
     {
       code: 'export function View() { return <div style={{ zIndex: 1000 }} />; }',

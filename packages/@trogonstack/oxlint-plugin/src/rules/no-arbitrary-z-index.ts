@@ -11,11 +11,13 @@ import {
   styleObjectProperties,
 } from '../shared/style-object.ts';
 import { ruleDocsUrl } from '../shared/docs.ts';
+import { classBase } from '../shared/tailwind.ts';
 
 const DEFAULT_MAX_Z_INDEX = 998;
 
 function classHasArbitraryZIndex(value: string, maxZIndex: number): boolean {
-  return splitClasses(value).some((item) => {
+  return splitClasses(value).some((token) => {
+    const item = classBase(token);
     const arbitrary = /^z-\[(\d+)]$/.exec(item);
     if (arbitrary !== null) return Number(arbitrary[1]) > maxZIndex;
 

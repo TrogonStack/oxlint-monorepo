@@ -10,6 +10,8 @@ Very large border radii on framed surfaces (32px and above by default) are a vis
 
 Flags arbitrary Tailwind radius classes such as `rounded-[40px]` and `rounded-t-[2rem]`, and style-object properties whose name contains `Radius`, when the value is above the threshold. `rem` values are converted at 16px per rem. Scale classes such as `rounded-xl` or `rounded-full` are never flagged.
 
+Variant prefixes (`md:`, `hover:`, stacked, or arbitrary like `[&>*]:`) and the important modifier (`!` prefix or suffix) are ignored when matching classes.
+
 ## Examples
 
 Invalid:

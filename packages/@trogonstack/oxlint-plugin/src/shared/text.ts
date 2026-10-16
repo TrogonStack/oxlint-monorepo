@@ -59,7 +59,12 @@ export function isLikelyUserFacingString(node: ESTree.Node): boolean {
 
   if (parent.type === 'Property') {
     const key = parent.key;
-    const keyName = key.type === 'Identifier' ? key.name : isStringLiteral(key) ? key.value : null;
+    const keyName =
+      key.type === 'Identifier' && !parent.computed
+        ? key.name
+        : isStringLiteral(key)
+          ? key.value
+          : null;
     return keyName !== null && USER_FACING_PROPERTY_KEYS.has(keyName);
   }
 

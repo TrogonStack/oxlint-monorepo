@@ -30,14 +30,15 @@ Every code block under `## Examples` in `docs/rules/<rule>.md` is linted with th
 
 1. Create `packages/@trogonstack/<name>/` with a `package.json` named `@trogonstack/<name>`, `"publishConfig": { "access": "public", "provenance": true }`, and a `build` script emitting to `dist`.
 2. Extend the shared TypeScript options: `{ "extends": "../../../tsconfig.base.json" }`.
-3. Add a `README.md` following the root README's introduction style, and list the package in the root README's Packages table.
-4. Add the package to `.github/release-please-config.json` under `packages`, keyed by its path:
+3. Copy the root `LICENSE` into the package directory, since npm only publishes files inside it.
+4. Add a `README.md` following the root README's introduction style, and list the package in the root README's Packages table.
+5. Add the package to `.github/release-please-config.json` under `packages`, keyed by its path:
 
 ```json
 "packages/@trogonstack/<name>": { "component": "@trogonstack/<name>" }
 ```
 
-5. Seed its version in `.github/release-please-manifest.json`:
+6. Seed its version in `.github/release-please-manifest.json`:
 
 ```json
 "packages/@trogonstack/<name>": "0.0.1"

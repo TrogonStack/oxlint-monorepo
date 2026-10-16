@@ -6,6 +6,7 @@ const tester = new RuleTester({ languageOptions: { parserOptions: { lang: 'tsx' 
 
 tester.run('trogonstack/no-nested-cards', noNestedCardsRule, {
   valid: [
+    'export function View() { return <Card><div className="md:panel [mask-type:luminance]" /></Card>; }',
     'export function View() { return <Card><section>Details</section></Card>; }',
     'export function View() { return <div className="panel"><div className="card">Details</div></div>; }',
     'export function View() { return <><Card>One</Card><Card>Two</Card></>; }',
@@ -14,6 +15,26 @@ tester.run('trogonstack/no-nested-cards', noNestedCardsRule, {
     'export function View() { return <Card>{cond ? <section /> : null}</Card>; }',
   ],
   invalid: [
+    {
+      code: 'export function View() { return <Card><div className="md:card" /></Card>; }',
+      errors: [{ messageId: 'nestedCard' }],
+    },
+    {
+      code: 'export function View() { return <Card><div className="dark:md:card-surface" /></Card>; }',
+      errors: [{ messageId: 'nestedCard' }],
+    },
+    {
+      code: 'export function View() { return <Card><div className="[&>*]:card" /></Card>; }',
+      errors: [{ messageId: 'nestedCard' }],
+    },
+    {
+      code: 'export function View() { return <Card><div className="!card" /></Card>; }',
+      errors: [{ messageId: 'nestedCard' }],
+    },
+    {
+      code: 'export function View() { return <Card><div className="card!" /></Card>; }',
+      errors: [{ messageId: 'nestedCard' }],
+    },
     {
       code: 'export function View() { return <div className="card"><div className="card">Nested</div></div>; }',
       errors: [{ messageId: 'nestedCard' }],

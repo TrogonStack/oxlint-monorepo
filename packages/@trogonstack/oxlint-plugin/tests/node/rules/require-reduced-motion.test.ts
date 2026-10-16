@@ -6,6 +6,8 @@ const tester = new RuleTester({ languageOptions: { parserOptions: { lang: 'tsx' 
 
 tester.run('trogonstack/require-reduced-motion', requireReducedMotionRule, {
   valid: [
+    'export function View() { return <button className="[&>*]:transition-opacity [&>*]:motion-reduce:transition-none">Save</button>; }',
+    'export function View() { return <button className="[mask-type:luminance] bg-[url(http://x)]">Save</button>; }',
     'export function View() { return <button className="px-3">Save</button>; }',
     'export function View() { return <button className="transition-colors motion-reduce:transition-none">Save</button>; }',
     "const css = '.item { transition: opacity .2s; } @media (prefers-reduced-motion: reduce) { .item { transition: none } }';",
@@ -33,6 +35,18 @@ tester.run('trogonstack/require-reduced-motion', requireReducedMotionRule, {
     "import { useReducedMotion } from 'framer-motion';\nexport function View() { const reduced = useReducedMotion(); return <button className={reduced ? '' : 'animate-pulse'}>Save</button>; }",
   ],
   invalid: [
+    {
+      code: 'export function View() { return <button className="[&>*]:transition-opacity">Save</button>; }',
+      errors: [{ messageId: 'reducedMotion' }],
+    },
+    {
+      code: 'export function View() { return <button className="animate-spin! bg-[url(http://x)]">Save</button>; }',
+      errors: [{ messageId: 'reducedMotion' }],
+    },
+    {
+      code: 'export function View() { return <button className="[&:hover]:md:transition-all">Save</button>; }',
+      errors: [{ messageId: 'reducedMotion' }],
+    },
     {
       code: 'export function View() { return <button className="transition-opacity">Save</button>; }',
       errors: [{ messageId: 'reducedMotion' }],

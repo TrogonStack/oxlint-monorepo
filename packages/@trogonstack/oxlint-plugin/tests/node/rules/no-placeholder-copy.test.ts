@@ -10,6 +10,9 @@ tester.run('trogonstack/no-placeholder-copy', noPlaceholderCopyRule, {
       code: "const label = 'todo';",
     },
     {
+      code: "const copy = { [title]: 'Coming soon' };",
+    },
+    {
       code: 'export function View() { return <input className="placeholder:text-muted" />; }',
     },
     {
@@ -20,6 +23,10 @@ tester.run('trogonstack/no-placeholder-copy', noPlaceholderCopyRule, {
     },
   ],
   invalid: [
+    {
+      code: "const copy = { ['title']: 'Coming soon' };",
+      errors: [{ messageId: 'placeholder' }],
+    },
     {
       code: 'export function View() { return <p>Coming soon</p>; }',
       errors: [{ messageId: 'placeholder' }],

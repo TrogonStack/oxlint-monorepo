@@ -5,6 +5,7 @@ import type { ESTree } from '@oxlint/plugins';
 import { getStaticClassPaths } from '../shared/class-paths.ts';
 import { findJSXAttribute } from '../shared/jsx.ts';
 import { splitClasses } from '../shared/style-object.ts';
+import { classBase } from '../shared/tailwind.ts';
 import { ruleDocsUrl } from '../shared/docs.ts';
 
 function openingElementName(opening: ESTree.JSXOpeningElement): string {
@@ -16,7 +17,7 @@ function openingElementName(opening: ESTree.JSXOpeningElement): string {
 function hasCardClass(opening: ESTree.JSXOpeningElement): boolean {
   const className = findJSXAttribute(opening, 'className');
   return getStaticClassPaths(className).some((path) =>
-    splitClasses(path).some((item) => /^card(?:$|-|_)/.test(item)),
+    splitClasses(path).some((item) => /^card(?:$|-|_)/.test(classBase(item))),
   );
 }
 

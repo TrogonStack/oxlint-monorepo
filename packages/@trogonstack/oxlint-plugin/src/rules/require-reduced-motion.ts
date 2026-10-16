@@ -12,14 +12,9 @@ import {
   styleObjectProperties,
 } from '../shared/style-object.ts';
 import { ruleDocsUrl } from '../shared/docs.ts';
+import { parseClassToken } from '../shared/tailwind.ts';
 
 type MotionKind = 'animation' | 'transition';
-
-interface ClassToken {
-  readonly variants: readonly string[];
-  readonly base: string;
-  readonly important: boolean;
-}
 
 interface ClassMotion {
   readonly kind: MotionKind;
@@ -71,27 +66,6 @@ const MOTION_STYLE_PROPERTIES: ReadonlySet<string> = new Set([
   'transition',
 ]);
 
-function classToken(item: string): ClassToken {
-  let token = item.trim();
-  let important = false;
-  if (token.endsWith('!')) {
-    important = true;
-    token = token.slice(0, -1);
-  }
-  if (token.startsWith('!')) {
-    important = true;
-    token = token.slice(1);
-  }
-
-  const segments = token.split(':');
-  let base = segments.at(-1) ?? '';
-  if (base.startsWith('!')) {
-    important = true;
-    base = base.slice(1);
-  }
-  return { variants: segments.slice(0, -1), base, important };
-}
-
 function variantScope(variants: readonly string[]): string[] {
   return variants.filter((variant) => variant !== 'motion-reduce' && variant !== 'motion-safe');
 }
@@ -114,7 +88,7 @@ function classMotionNeedsFallback(value: string): boolean {
   const fallbacks: ClassMotion[] = [];
 
   for (const item of splitClasses(value)) {
-    const token = classToken(item);
+    const token = parseClassToken(item);
     if (token.variants.includes('motion-reduce')) {
       if (token.base === 'animate-none') {
         fallbacks.push({

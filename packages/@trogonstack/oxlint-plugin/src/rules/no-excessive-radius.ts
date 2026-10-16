@@ -12,12 +12,13 @@ import {
   styleObjectProperties,
 } from '../shared/style-object.ts';
 import { ruleDocsUrl } from '../shared/docs.ts';
+import { classBase } from '../shared/tailwind.ts';
 
 const DEFAULT_MAX_RADIUS_PX = 31;
 
 function classHasExcessiveRadius(value: string, maxRadiusPx: number): boolean {
-  return splitClasses(value).some((item) => {
-    const match = /^rounded(?:-[a-z]+)?-\[(.+)]$/.exec(item);
+  return splitClasses(value).some((token) => {
+    const match = /^rounded(?:-[a-z]+)?-\[(.+)]$/.exec(classBase(token));
     return match !== null ? (parseCssLengthPx(match[1]) ?? 0) > maxRadiusPx : false;
   });
 }

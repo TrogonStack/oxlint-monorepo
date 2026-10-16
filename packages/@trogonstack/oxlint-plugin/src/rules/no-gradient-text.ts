@@ -6,9 +6,10 @@ import { getStaticClassPaths } from '../shared/class-paths.ts';
 import { getJSXExpression, isJSXAttributeNamed } from '../shared/jsx.ts';
 import { splitClasses, stylePropertyMap } from '../shared/style-object.ts';
 import { ruleDocsUrl } from '../shared/docs.ts';
+import { classBase } from '../shared/tailwind.ts';
 
 function classNameHasGradientText(value: string): boolean {
-  const classes = splitClasses(value);
+  const classes = splitClasses(value).map(classBase);
   const hasClip = classes.includes('bg-clip-text') || classes.includes('background-clip-text');
   const hasTransparentText =
     classes.includes('text-transparent') || classes.includes('[color:transparent]');

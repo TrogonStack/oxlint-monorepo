@@ -10,6 +10,8 @@ Discourage arbitrary z-index values outside a semantic stacking scale.
 
 Flags Tailwind classes `z-[N]` and `z-NNN` (three or more digits) above the threshold, and style-object `zIndex` values above it. Static classes are also recovered from `clsx`/`cn`-style calls, conditionals, and template literals.
 
+Variant prefixes (`md:`, `hover:`, stacked, or arbitrary like `[&>*]:`) and the important modifier (`!` prefix or suffix) are ignored when matching classes.
+
 ## Examples
 
 Invalid:

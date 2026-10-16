@@ -12,6 +12,7 @@ import {
   styleObjectProperties,
 } from '../shared/style-object.ts';
 import { ruleDocsUrl } from '../shared/docs.ts';
+import { classBase } from '../shared/tailwind.ts';
 
 const SIDE_BORDER_PROPERTIES: ReadonlySet<string> = new Set([
   'borderLeft',
@@ -21,7 +22,8 @@ const SIDE_BORDER_PROPERTIES: ReadonlySet<string> = new Set([
 ]);
 
 function classHasSideStripe(value: string): boolean {
-  return splitClasses(value).some((item) => {
+  return splitClasses(value).some((token) => {
+    const item = classBase(token);
     if (/^border-[lr]-(?:[2-9]|\d{2,})$/.test(item)) return true;
 
     const arbitrary = /^border-[lr]-\[(.+)]$/.exec(item);
