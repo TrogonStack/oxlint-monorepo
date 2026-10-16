@@ -21,6 +21,7 @@ import { noObjectParametersRule } from './rules/no-object-parameters.ts';
 import { noPagesRouterRule } from './rules/no-pages-router.ts';
 import { noPlaceholderCopyRule } from './rules/no-placeholder-copy.ts';
 import { noPrivateLibraryDirectoriesRule } from './rules/no-private-library-directories.ts';
+import { noPublicPathPrefixRule } from './rules/no-public-path-prefix.ts';
 import { noReflectApplyRule } from './rules/no-reflect-apply.ts';
 import { noReflectGetRule } from './rules/no-reflect-get.ts';
 import { noRootAssetsDirectoryRule } from './rules/no-root-assets-directory.ts';
@@ -74,6 +75,7 @@ const trogonstackPlugin = eslintCompatPlugin({
     'no-pages-router': noPagesRouterRule,
     'no-placeholder-copy': noPlaceholderCopyRule,
     'no-private-library-directories': noPrivateLibraryDirectoriesRule,
+    'no-public-path-prefix': noPublicPathPrefixRule,
     'no-reflect-apply': noReflectApplyRule,
     'no-reflect-get': noReflectGetRule,
     'no-root-assets-directory': noRootAssetsDirectoryRule,
