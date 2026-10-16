@@ -1,0 +1,12 @@
+{
+  "jsPlugins": ["@trogonstack/oxlint-plugin"],
+  "rules": {
+    "trogonstack/no-cross-route-imports": "error",
+    "trogonstack/require-fractal-directories": "error",
+    "trogonstack/require-private-app-directories": "error",
+    "trogonstack/require-client-file-suffix": "error",
+    "trogonstack/no-server-file-suffix": "error",
+    "trogonstack/no-public-path-prefix": "error",
+    "trogonstack/no-demo-data-primary-path": "error"
+  }
+}

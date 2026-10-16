@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+#MISE description="Lint the workspace"
+set -euo pipefail
+
+pnpm run lint

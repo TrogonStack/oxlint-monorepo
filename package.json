@@ -1,0 +1,33 @@
+{
+  "name": "oxlint-monorepo",
+  "private": true,
+  "license": "Apache-2.0",
+  "author": "Straw Hat, LLC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TrogonStack/oxlint-monorepo.git"
+  },
+  "workspaces": [
+    "packages/@trogonstack/*"
+  ],
+  "type": "module",
+  "scripts": {
+    "lint": "oxlint",
+    "fmt": "oxfmt",
+    "fmt:check": "oxfmt --check",
+    "typecheck": "pnpm -r run typecheck",
+    "build": "pnpm -r run build",
+    "test": "pnpm -r run test",
+    "docs:check": "pnpm -r run docs:check"
+  },
+  "devDependencies": {
+    "@types/node": "^26.1.2",
+    "oxfmt": "^0.61.0",
+    "oxlint": "^1.76.0",
+    "typescript": "^7.0.2"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "packageManager": "pnpm@11.22.0"
+}

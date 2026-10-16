@@ -1,0 +1,13 @@
+{
+  "jsPlugins": ["@trogonstack/oxlint-plugin"],
+  "rules": {
+    "trogonstack/require-reduced-motion": "error",
+    "trogonstack/no-arbitrary-z-index": "warn",
+    "trogonstack/no-decorative-grid-background": "warn",
+    "trogonstack/no-excessive-radius": "warn",
+    "trogonstack/no-gradient-text": "warn",
+    "trogonstack/no-hidden-reveal-default": "warn",
+    "trogonstack/no-nested-cards": "warn",
+    "trogonstack/no-side-stripe-accent": "warn"
+  }
+}

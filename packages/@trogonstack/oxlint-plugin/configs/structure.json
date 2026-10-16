@@ -1,0 +1,15 @@
+{
+  "plugins": ["import", "oxc"],
+  "jsPlugins": ["@trogonstack/oxlint-plugin"],
+  "rules": {
+    "trogonstack/require-colocated-modules": "error",
+    "trogonstack/require-colocated-css-modules": "error",
+    "trogonstack/no-private-library-directories": "error",
+    "trogonstack/require-colocated-unit-tests": "error",
+    "trogonstack/require-types-directory": "error",
+    "trogonstack/require-import-locality": "warn",
+    "import/no-cycle": "error",
+    "import/no-relative-parent-imports": "warn",
+    "oxc/no-barrel-file": "warn"
+  }
+}

@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+#MISE description="Verify the README rules table and every rule doc example"
+#MISE depends=["docs:sync --check", "docs:examples"]

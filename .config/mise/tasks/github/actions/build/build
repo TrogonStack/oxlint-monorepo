@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+#MISE description="Build every workspace package"
+set -euo pipefail
+
+pnpm run build

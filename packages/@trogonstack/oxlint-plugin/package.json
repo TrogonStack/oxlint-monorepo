@@ -1,0 +1,53 @@
+{
+  "name": "@trogonstack/oxlint-plugin",
+  "version": "0.0.1",
+  "description": "Opinionated Oxlint rules for evidence-driven TypeScript and JavaScript",
+  "keywords": [
+    "lint",
+    "oxlint",
+    "oxlint-plugin",
+    "typescript"
+  ],
+  "license": "Apache-2.0",
+  "author": "Straw Hat, LLC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TrogonStack/oxlint-monorepo.git",
+    "directory": "packages/@trogonstack/oxlint-plugin"
+  },
+  "files": [
+    "configs",
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./configs/*": "./configs/*"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "test": "node --test \"tests/node/**/*.test.ts\"",
+    "typecheck": "tsc -p tsconfig.json",
+    "docs": "mise run docs:sync",
+    "docs:check": "mise run docs:check"
+  },
+  "dependencies": {
+    "@oxlint/plugins": "^1.88.0"
+  },
+  "devDependencies": {
+    "oxfmt": "^0.61.0",
+    "oxlint": "^1.79.0"
+  }
+}

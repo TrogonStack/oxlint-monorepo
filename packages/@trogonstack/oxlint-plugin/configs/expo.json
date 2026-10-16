@@ -1,0 +1,6 @@
+{
+  "extends": ["./react-library.json", "./app-structure.json"],
+  "rules": {
+    "trogonstack/no-root-assets-directory": "error"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "extends": ["./react-library.json", "./app-structure.json", "./react-dom.json"],
+  "rules": {
+    "trogonstack/no-pages-router": "error",
+    "trogonstack/no-server-action-imports": "error",
+    "trogonstack/require-client-component-suffix": "error",
+    "trogonstack/require-locale-route-parameter": "error",
+    "trogonstack/require-server-directives": "error",
+    "trogonstack/no-unjustified-use-client": "error"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "extends": ["./react-library.json", "./app-structure.json", "./react-dom.json"],
+  "rules": {
+    "trogonstack/require-app-entry-file": "error"
+  }
+}
