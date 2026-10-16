@@ -23,6 +23,12 @@ tester.run('trogonstack/require-private-app-directories', requirePrivateAppDirec
   invalid: [
     {
       code: 'export {};',
+      filename: '/repo/src/app/features/x.ts',
+      settings: { trogonstack: { fractalDirectories: ['features'] } },
+      errors: [error('features')],
+    },
+    {
+      code: 'export {};',
       filename: '/repo/src/app/components/button.tsx',
       errors: [error('components')],
     },

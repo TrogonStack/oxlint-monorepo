@@ -1,6 +1,7 @@
 import { defineRule } from '@oxlint/plugins';
 
 import { ruleDocsUrl } from '../shared/docs.ts';
+import { getTrogonstackSettings } from '../shared/plugin-settings.ts';
 import { sourceDirectories, sourcePath } from '../shared/source-path.ts';
 
 type Scope = 'source' | 'app' | 'fractal';
@@ -11,41 +12,11 @@ const LIBS_DIRECTORY = 'libs';
 const COMPONENTS_DIRECTORY = 'components';
 const PRIVATE_DIRECTORY_PREFIX = '_';
 const UNCONSTRAINED_SOURCE_DIRECTORIES: ReadonlySet<string> = new Set(['@types', 'polyfills']);
-const CATEGORY_DIRECTORIES: readonly string[] = [
-  'services',
-  'storages',
-  'schemas',
-  COMPONENTS_DIRECTORY,
-  'hooks',
-  'contexts',
-  'constants',
-  'types',
-  'styles',
-  'assets',
-  'i18n',
-  'helpers',
-  'server',
-  TESTS_DIRECTORY,
-];
 const CATEGORY_CHILDREN: ReadonlyMap<string, ReadonlySet<string>> = new Map([
   ['storages', new Set(['local', 'session', 'cookies', 'websql', 'indexeddb'])],
   ['i18n', new Set(['messages', 'datetime', 'list', 'numbers', 'plural', 'relative-time'])],
   ['server', new Set(['actions'])],
 ]);
-
-function additionalDirectoriesOption(options: readonly unknown[]): readonly string[] {
-  const option = options[0];
-  if (typeof option === 'object' && option !== null && 'additionalDirectories' in option) {
-    const { additionalDirectories } = option;
-    if (
-      Array.isArray(additionalDirectories) &&
-      additionalDirectories.every((item) => typeof item === 'string')
-    ) {
-      return additionalDirectories;
-    }
-  }
-  return [];
-}
 
 function categoryName(segment: string, scope: Scope): string | null {
   if (scope !== 'app' || segment === TESTS_DIRECTORY) return segment;
@@ -102,15 +73,7 @@ export const requireFractalDirectoriesRule = defineRule({
       description:
         'Require every directory under `src` to follow the fractal directory pattern of ADR 5541831634.',
     },
-    schema: [
-      {
-        type: 'object',
-        properties: {
-          additionalDirectories: { type: 'array', items: { type: 'string' } },
-        },
-        additionalProperties: false,
-      },
-    ],
+    schema: [],
     messages: {
       unknownDirectory:
         'The `{{directory}}` directory is not allowed in `{{parent}}`. Use a directory defined by the fractal pattern.',
@@ -123,8 +86,8 @@ export const requireFractalDirectoriesRule = defineRule({
         if (path === null) return;
         const directories = sourceDirectories(path);
         const categories = new Set([
-          ...CATEGORY_DIRECTORIES,
-          ...additionalDirectoriesOption(context.options),
+          ...getTrogonstackSettings(context).fractalDirectories,
+          TESTS_DIRECTORY,
         ]);
         const index = unknownDirectoryIndex(directories, categories);
         if (index === null) return;

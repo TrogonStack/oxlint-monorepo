@@ -43,12 +43,12 @@ tester.run('trogonstack/require-fractal-directories', requireFractalDirectoriesR
     {
       code: 'export {};',
       filename: '/repo/src/features/x.ts',
-      options: [{ additionalDirectories: ['features'] }],
+      settings: { trogonstack: { fractalDirectories: ['features'] } },
     },
     {
       code: 'export {};',
       filename: '/repo/src/app/_features/x.ts',
-      options: [{ additionalDirectories: ['features'] }],
+      settings: { trogonstack: { fractalDirectories: ['features'] } },
     },
   ],
   invalid: [
@@ -117,7 +117,7 @@ tester.run('trogonstack/require-fractal-directories', requireFractalDirectoriesR
     {
       code: 'export {};',
       filename: '/repo/src/lib/x.ts',
-      options: [{ additionalDirectories: ['features'] }],
+      settings: { trogonstack: { fractalDirectories: ['features'] } },
       errors: [error('lib', 'src')],
     },
     {

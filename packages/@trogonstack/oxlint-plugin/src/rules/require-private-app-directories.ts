@@ -1,23 +1,8 @@
 import { defineRule } from '@oxlint/plugins';
 
 import { ruleDocsUrl } from '../shared/docs.ts';
+import { getTrogonstackSettings } from '../shared/plugin-settings.ts';
 import { sourceDirectories, sourcePath } from '../shared/source-path.ts';
-
-const FRACTAL_DIRECTORIES: ReadonlySet<string> = new Set([
-  'services',
-  'storages',
-  'schemas',
-  'components',
-  'hooks',
-  'contexts',
-  'constants',
-  'types',
-  'styles',
-  'assets',
-  'i18n',
-  'helpers',
-  'server',
-]);
 
 export const requirePrivateAppDirectoriesRule = defineRule({
   meta: {
@@ -40,9 +25,10 @@ export const requirePrivateAppDirectoriesRule = defineRule({
         if (path === null) return;
         const directories = sourceDirectories(path);
         if (directories[0] !== 'app') return;
+        const fractalDirectories = getTrogonstackSettings(context).fractalDirectories;
         for (const segment of directories.slice(1)) {
           if (segment.startsWith('_')) return;
-          if (FRACTAL_DIRECTORIES.has(segment)) {
+          if (fractalDirectories.includes(segment)) {
             context.report({ node, messageId: 'publicDirectory', data: { name: segment } });
             return;
           }

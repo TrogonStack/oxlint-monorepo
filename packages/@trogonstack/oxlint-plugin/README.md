@@ -28,7 +28,7 @@ Register the plugin in `.oxlintrc.json` and enable the rules you want:
 }
 ```
 
-The copy, data, client-boundary and project-structure rules read shared lists from `settings.trogonstack`. `sourceAliases` lists the import prefixes that resolve to `src`, so the structure rules can follow aliased imports. Each list you set replaces its default:
+The copy, data, client-boundary and project-structure rules read shared lists from `settings.trogonstack`. `sourceAliases` lists the import prefixes that resolve to `src`, so the structure rules can follow aliased imports. `fractalDirectories` lists the category directories the fractal pattern allows. Each list you set replaces its default:
 
 ```json
 {
@@ -48,7 +48,22 @@ The copy, data, client-boundary and project-structure rules read shared lists fr
       "demoDataModules": ["@/demo", "@/mocks", "@/fixtures"],
       "realDataIndicators": ["fetch", "db", "prisma", "trpc"],
       "clientOnlyImports": ["next/navigation", "@tanstack/react-query", "recharts"],
-      "sourceAliases": ["@/"]
+      "sourceAliases": ["@/"],
+      "fractalDirectories": [
+        "services",
+        "storages",
+        "schemas",
+        "components",
+        "hooks",
+        "contexts",
+        "constants",
+        "types",
+        "styles",
+        "assets",
+        "i18n",
+        "helpers",
+        "server"
+      ]
     }
   }
 }

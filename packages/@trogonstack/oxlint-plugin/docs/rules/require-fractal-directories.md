@@ -38,17 +38,21 @@ Valid:
 export const format = () => '';
 ```
 
-## Options
+## Settings
+
+The category names come from the shared `fractalDirectories` list in `settings.trogonstack`, which `require-private-app-directories` reads as well. Setting it replaces the default list, so include the ADR categories you keep:
 
 ```json
 {
-  "rules": {
-    "trogonstack/require-fractal-directories": ["error", { "additionalDirectories": ["features"] }]
+  "settings": {
+    "trogonstack": {
+      "fractalDirectories": ["services", "components", "hooks", "helpers", "features"]
+    }
   }
 }
 ```
 
-- `additionalDirectories` (string array, default `[]`): extra category directory names allowed in every fractal directory. They take the underscore prefix under `src/app` like the built-in categories, and are not constrained below their own directory.
+Each name takes the underscore prefix under `src/app`, and nothing below its own directory is constrained, except for the `storages`, `i18n` and `server` subdirectories the ADR defines.
 
 ## Circular dependencies
 

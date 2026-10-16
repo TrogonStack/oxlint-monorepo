@@ -11,6 +11,7 @@ export interface TrogonstackSettings {
   readonly realDataIndicators: readonly string[];
   readonly clientOnlyImports: readonly string[];
   readonly sourceAliases: readonly string[];
+  readonly fractalDirectories: readonly string[];
 }
 
 export const DEFAULT_SETTINGS: TrogonstackSettings = {
@@ -22,6 +23,21 @@ export const DEFAULT_SETTINGS: TrogonstackSettings = {
   realDataIndicators: ['fetch', 'db', 'prisma', 'trpc'],
   clientOnlyImports: ['next/navigation', '@tanstack/react-query', 'recharts'],
   sourceAliases: ['@/'],
+  fractalDirectories: [
+    'services',
+    'storages',
+    'schemas',
+    'components',
+    'hooks',
+    'contexts',
+    'constants',
+    'types',
+    'styles',
+    'assets',
+    'i18n',
+    'helpers',
+    'server',
+  ],
 };
 
 function isStringList(value: unknown): value is string[] {
@@ -48,5 +64,6 @@ export function getTrogonstackSettings(context: Pick<Context, 'settings'>): Trog
     realDataIndicators: pick('realDataIndicators'),
     clientOnlyImports: pick('clientOnlyImports'),
     sourceAliases: pick('sourceAliases'),
+    fractalDirectories: pick('fractalDirectories'),
   };
 }
