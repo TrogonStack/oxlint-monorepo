@@ -8,20 +8,7 @@ import { ruleDocsUrl } from '../shared/docs.ts';
 
 type NamedIdentifier = Extract<ESTree.Node, { type: 'Identifier'; name: string }>;
 
-const CLIENT_HOOKS: ReadonlySet<string> = new Set([
-  'useState',
-  'useEffect',
-  'useLayoutEffect',
-  'useReducer',
-  'useRef',
-  'useTransition',
-  'useDeferredValue',
-  'useImperativeHandle',
-  'useSyncExternalStore',
-  'useInsertionEffect',
-  'useOptimistic',
-  'useActionState',
-]);
+const HOOK_NAME = /^use[A-Z]/;
 const BROWSER_GLOBALS: ReadonlySet<string> = new Set([
   'window',
   'document',
@@ -170,7 +157,7 @@ export const noUnjustifiedUseClientRule = defineRule({
         }
 
         for (const specifier of runtimeSpecifiers) {
-          if (/^use[A-Z]/.test(specifier.local.name)) {
+          if (HOOK_NAME.test(specifier.local.name)) {
             clientHookLocalNames.add(specifier.local.name);
           }
 
@@ -181,7 +168,7 @@ export const noUnjustifiedUseClientRule = defineRule({
               specifier.imported.type === 'Identifier'
                 ? specifier.imported.name
                 : specifier.imported.value;
-            if (CLIENT_HOOKS.has(imported)) clientHookLocalNames.add(specifier.local.name);
+            if (HOOK_NAME.test(imported)) clientHookLocalNames.add(specifier.local.name);
           } else {
             reactNamespaceNames.add(specifier.local.name);
           }
@@ -213,7 +200,7 @@ export const noUnjustifiedUseClientRule = defineRule({
 
         if (
           reactNamespaceNames.has(node.object.name) &&
-          CLIENT_HOOKS.has(propertyName) &&
+          HOOK_NAME.test(propertyName) &&
           isImportedBinding(node.object)
         ) {
           hasClientSignal = true;

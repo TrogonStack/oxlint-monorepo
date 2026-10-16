@@ -12,9 +12,9 @@ The rule applies to files whose first statement is the `"use client"` directive,
 
 A client signal is any of the following:
 
-- A React client hook (`useState`, `useEffect`, `useLayoutEffect`, `useReducer`, `useRef`, `useTransition`, `useDeferredValue`, `useImperativeHandle`, `useSyncExternalStore`, `useInsertionEffect`, `useOptimistic`, `useActionState`) imported from `react` and actually referenced in the file. Aliased imports are tracked by their local name; an unused import is not a signal.
+- A React hook (any export matching `use[A-Z]`, such as `useState`, `useEffect`, or `useMemo`) imported from `react` and actually referenced in the file, including aliased imports tracked by their local name. An unused import is not a signal.
 - A referenced imported binding whose local name matches `use[A-Z]`, such as `useWorkspace` from an application hook module. Type-only imports and type-only references do not count.
-- `React.useState(...)`-style member access through a react namespace or default import.
+- `React.useState(...)` or `React.useMemo(...)`-style member access through a react namespace or default import.
 - Unshadowed browser globals: `window`, `document`, `localStorage`, `sessionStorage`, and `navigator`, including access through `globalThis` such as `globalThis["localStorage"]`. Object-property spellings such as `settings.window` do not count.
 - JSX event handler props matching `/^on[A-Z]/` (`onClick`, `onChange`; a prop like `online` does not count).
 - Imports from client-only modules (`settings.trogonstack.clientOnlyImports`, default: `next/navigation`, `@tanstack/react-query`, `recharts`, including their subpaths). A type-only import does not count.
