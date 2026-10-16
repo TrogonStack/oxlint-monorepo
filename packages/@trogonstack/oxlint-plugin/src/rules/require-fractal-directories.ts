@@ -1,69 +1,9 @@
 import { defineRule } from '@oxlint/plugins';
 
 import { ruleDocsUrl } from '../shared/docs.ts';
+import { TESTS_DIRECTORY, walkFractalDirectories } from '../shared/fractal-directories.ts';
 import { getTrogonstackSettings } from '../shared/plugin-settings.ts';
 import { sourceDirectories, sourcePath } from '../shared/source-path.ts';
-
-type Scope = 'source' | 'app' | 'fractal';
-
-const TESTS_DIRECTORY = '__tests__';
-const APP_DIRECTORY = 'app';
-const LIBS_DIRECTORY = 'libs';
-const COMPONENTS_DIRECTORY = 'components';
-const PRIVATE_DIRECTORY_PREFIX = '_';
-const UNCONSTRAINED_SOURCE_DIRECTORIES: ReadonlySet<string> = new Set(['@types', 'polyfills']);
-const CATEGORY_CHILDREN: ReadonlyMap<string, ReadonlySet<string>> = new Map([
-  ['storages', new Set(['local', 'session', 'cookies', 'websql', 'indexeddb'])],
-  ['i18n', new Set(['messages', 'datetime', 'list', 'numbers', 'plural', 'relative-time'])],
-  ['server', new Set(['actions'])],
-]);
-
-function categoryName(segment: string, scope: Scope): string | null {
-  if (scope !== 'app' || segment === TESTS_DIRECTORY) return segment;
-  return segment.startsWith(PRIVATE_DIRECTORY_PREFIX)
-    ? segment.slice(PRIVATE_DIRECTORY_PREFIX.length)
-    : null;
-}
-
-function unknownDirectoryIndex(
-  directories: readonly string[],
-  categories: ReadonlySet<string>,
-): number | null {
-  let scope: Scope = 'source';
-  let index = 0;
-  while (index < directories.length) {
-    const segment = directories[index] ?? '';
-    if (scope === 'app' && !segment.startsWith(PRIVATE_DIRECTORY_PREFIX)) {
-      index += 1;
-      continue;
-    }
-    if (scope === 'source' && segment === APP_DIRECTORY) {
-      scope = 'app';
-      index += 1;
-      continue;
-    }
-    if (scope === 'source' && segment === LIBS_DIRECTORY) {
-      scope = 'fractal';
-      index += 2;
-      continue;
-    }
-    if (scope === 'source' && UNCONSTRAINED_SOURCE_DIRECTORIES.has(segment)) return null;
-
-    const name = categoryName(segment, scope);
-    if (name === null || !categories.has(name)) return index;
-
-    const child = directories[index + 1];
-    if (child === undefined) return null;
-    if (name === COMPONENTS_DIRECTORY) {
-      scope = 'fractal';
-      index += 2;
-      continue;
-    }
-    const allowedChildren = CATEGORY_CHILDREN.get(name);
-    return allowedChildren === undefined || allowedChildren.has(child) ? null : index + 1;
-  }
-  return null;
-}
 
 export const requireFractalDirectoriesRule = defineRule({
   meta: {
@@ -89,7 +29,7 @@ export const requireFractalDirectoriesRule = defineRule({
           ...getTrogonstackSettings(context).fractalDirectories,
           TESTS_DIRECTORY,
         ]);
-        const index = unknownDirectoryIndex(directories, categories);
+        const index = walkFractalDirectories(directories, categories).unknownIndex;
         if (index === null) return;
         context.report({
           node,

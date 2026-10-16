@@ -125,11 +125,25 @@ async function lint(example: Example, dir: string): Promise<Diagnostic[]> {
       settings: { trogonstack: example.settings ?? {} },
     }),
   );
-  const first = example.code.split('\n', 1)[0];
-  const filename = filenamePattern.exec(first)?.[1] ?? `example.${extensions[example.language]}`;
-  const file = join(dir, filename);
-  await mkdir(dirname(file), { recursive: true });
-  await writeFile(file, example.code);
+  const lines = example.code.split('\n');
+  const files: Array<{ filename: string; lines: string[] }> = [];
+  for (const line of lines) {
+    const filename = filenamePattern.exec(line)?.[1];
+    if (filename !== undefined && (files.length > 0 || line === lines[0])) {
+      files.push({ filename, lines: [line] });
+    } else if (files.length === 0) {
+      files.push({ filename: `example.${extensions[example.language]}`, lines: [line] });
+    } else {
+      files[files.length - 1].lines.push(line);
+    }
+  }
+  await Promise.all(
+    files.map(async ({ filename, lines: content }) => {
+      const file = join(dir, filename);
+      await mkdir(dirname(file), { recursive: true });
+      await writeFile(file, content.join('\n'));
+    }),
+  );
 
   let stdout: string;
   try {

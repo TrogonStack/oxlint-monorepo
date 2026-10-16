@@ -3,5 +3,6 @@
   "compilerOptions": {
     "noEmit": true
   },
-  "include": ["src", "tests", ".config/mise/tasks"]
+  "include": ["src", "tests", ".config/mise/tasks"],
+  "exclude": ["tests/fixtures"]
 }

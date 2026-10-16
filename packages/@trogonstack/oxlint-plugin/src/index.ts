@@ -12,6 +12,7 @@ import { noExcessiveRadiusRule } from './rules/no-excessive-radius.ts';
 import { noGenericStatLabelRule } from './rules/no-generic-stat-label.ts';
 import { noGradientTextRule } from './rules/no-gradient-text.ts';
 import { noHiddenRevealDefaultRule } from './rules/no-hidden-reveal-default.ts';
+import { noHoistedModulesRule } from './rules/no-hoisted-modules.ts';
 import { noKnownValueWideningRule } from './rules/no-known-value-widening.ts';
 import { noMarketingCopyRule } from './rules/no-marketing-copy.ts';
 import { noModuleMockingRule } from './rules/no-module-mocking.ts';
@@ -64,6 +65,7 @@ const trogonstackPlugin = eslintCompatPlugin({
     'no-generic-stat-label': noGenericStatLabelRule,
     'no-gradient-text': noGradientTextRule,
     'no-hidden-reveal-default': noHiddenRevealDefaultRule,
+    'no-hoisted-modules': noHoistedModulesRule,
     'no-known-value-widening': noKnownValueWideningRule,
     'no-marketing-copy': noMarketingCopyRule,
     'no-module-mocking': noModuleMockingRule,
