@@ -1,23 +1,17 @@
 import { defineRule } from '@oxlint/plugins';
 import type { ESTree } from '@oxlint/plugins';
 import { ruleDocsUrl } from '../shared/docs.ts';
-
-function unwrapParentheses(node: ESTree.Expression): ESTree.Expression {
-  let current = node;
-  while (current.type === 'ParenthesizedExpression') {
-    current = current.expression;
-  }
-  return current;
-}
+import { unwrapStaticExpression } from '../shared/static-expression.ts';
 
 function isEmptyObjectExpression(node: ESTree.Expression): boolean {
-  return node.type === 'ObjectExpression' && node.properties.length === 0;
+  const expression = unwrapStaticExpression(node);
+  return expression?.type === 'ObjectExpression' && expression.properties.length === 0;
 }
 
 function isConditionalEmptyObjectSpread(node: ESTree.Expression): boolean {
-  const conditional = unwrapParentheses(node);
+  const conditional = unwrapStaticExpression(node);
   return (
-    conditional.type === 'ConditionalExpression' &&
+    conditional?.type === 'ConditionalExpression' &&
     (isEmptyObjectExpression(conditional.consequent) ||
       isEmptyObjectExpression(conditional.alternate))
   );

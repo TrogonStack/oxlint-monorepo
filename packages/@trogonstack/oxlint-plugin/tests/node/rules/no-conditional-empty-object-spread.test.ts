@@ -17,6 +17,18 @@ tester.run('trogonstack/no-conditional-empty-object-spread', noConditionalEmptyO
   ],
   invalid: [
     {
+      code: 'const result = { ...(condition ? { value } : ({} as const)) };',
+      errors: [{ messageId: 'avoid' }],
+    },
+    {
+      code: 'const result = { ...(condition ? {} satisfies Partial<T> : { value }) };',
+      errors: [{ messageId: 'avoid' }],
+    },
+    {
+      code: 'const result = { ...((condition ? { value } : {}) as Partial<T>) };',
+      errors: [{ messageId: 'avoid' }],
+    },
+    {
       code: 'const result = { ...(value !== undefined ? { value } : {}) };',
       errors: [error],
     },
