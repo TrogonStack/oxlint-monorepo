@@ -21,8 +21,11 @@ function classHasHiddenReveal(value: string): boolean {
     (token) =>
       token.variants.length === 0 && (token.base === 'opacity-0' || token.base === 'invisible'),
   );
-  const motion = tokens.some((token) =>
-    /^(?:animate-|transition(?:-|$)|duration-)/.test(token.base),
+  const motion = tokens.some(
+    (token) =>
+      token.base !== 'animate-none' &&
+      token.base !== 'transition-none' &&
+      /^(?:animate-|transition(?:-|$)|duration-)/.test(token.base),
   );
   return hidden && motion;
 }
@@ -38,7 +41,9 @@ function styleHasHiddenReveal(expression: ESTree.Node | null): boolean {
   });
   const motion = properties.some((property) => {
     const name = getPropertyName(property);
-    return name === 'animation' || name === 'transition';
+    if (name !== 'animation' && name !== 'transition') return false;
+    const value = getPropertyValue(property);
+    return !(typeof value === 'string' && /^none\b/i.test(value.trim()));
   });
   return hidden && motion;
 }
@@ -46,7 +51,7 @@ function styleHasHiddenReveal(expression: ESTree.Node | null): boolean {
 function cssStringHasHiddenReveal(value: string): boolean {
   return (
     /(?:opacity\s*:\s*(?:0+(?:\.0*)?|\.0+)%?(?![\w.%])|visibility\s*:\s*hidden)/.test(value) &&
-    /\b(?:animation|transition)\s*:/.test(value)
+    /\b(?:animation|transition)\s*:(?!\s*none\b)/i.test(value)
   );
 }
 

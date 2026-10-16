@@ -10,7 +10,7 @@ Code that only one feature uses should live with that feature, so it is found, c
 
 The fractal directories are `src`, `src/app` and every route directory below it, `components/<name>` (or `_components/<name>` under `src/app`), and `src/libs/<name>`. The owner of a file is its nearest enclosing fractal directory.
 
-The rule reads every JavaScript and TypeScript file under the `src` directory once per process and records which files import which. It follows `import ... from`, `import '...'`, `export ... from`, `import()`, and `require()` with a string literal, resolving relative specifiers and source aliases to files, directory indexes, and extensionless paths.
+The rule reads every JavaScript and TypeScript file under the `src` directory once per process and records which files import which. It follows `import ... from`, `import '...'`, `export ... from`, `import()`, and `require()` with a string literal, resolving relative specifiers and source aliases to files, directory indexes, and extensionless paths. Comments and the contents of string and template literals are not scanned, so commented-out imports and import-like text inside strings create no edge. Regex literals are recognized heuristically from the preceding token, so an unusual regex that looks like division can still confuse the scan.
 
 For a file, the rule takes the files that import it, ignoring unit tests (`*.test.*` and `*.spec.*`), and finds the deepest fractal directory that contains all of them. It reports the file when that directory is strictly deeper than the file's owner and sits inside it. Files that nothing imports are not reported.
 
