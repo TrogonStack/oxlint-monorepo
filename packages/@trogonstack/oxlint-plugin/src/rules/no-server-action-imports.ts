@@ -49,6 +49,7 @@ export const noServerActionImportsRule = defineRule({
   createOnce(context) {
     let isActionsFile = false;
     const exportedFunctions = new Map<string, FunctionNode>();
+    const anonymousDefaults = new Set<FunctionNode>();
 
     function topLevelCaller(node: ESTree.Node): FunctionNode | null {
       let current: ESTree.Node | null = node;
@@ -90,6 +91,7 @@ export const noServerActionImportsRule = defineRule({
       before() {
         isActionsFile = false;
         exportedFunctions.clear();
+        anonymousDefaults.clear();
       },
       Program(node) {
         const path = sourcePath(context);
@@ -109,6 +111,16 @@ export const noServerActionImportsRule = defineRule({
               for (const specifier of statement.specifiers) {
                 if (specifier.local.type === 'Identifier') exportedNames.add(specifier.local.name);
               }
+            }
+          } else if (statement.type === 'ExportDefaultDeclaration') {
+            const declaration = statement.declaration;
+            if (declaration.type === 'Identifier') {
+              exportedNames.add(declaration.name);
+            } else if (declaration.type === 'FunctionDeclaration' && declaration.id !== null) {
+              functions.set(declaration.id.name, declaration);
+              exportedNames.add(declaration.id.name);
+            } else if (isFunctionNode(declaration)) {
+              anonymousDefaults.add(declaration);
             }
           } else {
             for (const [name, fn] of declaredFunctions(statement)) functions.set(name, fn);
@@ -130,7 +142,8 @@ export const noServerActionImportsRule = defineRule({
 
         const caller = topLevelCaller(node);
         if (caller === null || caller === callee) return;
-        const isExportedCaller = [...exportedFunctions.values()].includes(caller);
+        const isExportedCaller =
+          anonymousDefaults.has(caller) || [...exportedFunctions.values()].includes(caller);
         if (!isExportedCaller) return;
 
         const variable = moduleVariable(node.callee);

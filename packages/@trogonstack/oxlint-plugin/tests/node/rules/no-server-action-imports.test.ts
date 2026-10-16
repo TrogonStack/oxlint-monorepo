@@ -16,6 +16,14 @@ function calls(name: string) {
 
 tester.run('trogonstack/no-server-action-imports', noServerActionImportsRule, {
   valid: [
+    {
+      code: 'export default async function () { return 1; }\nexport async function b() { return 2; }',
+      filename: action,
+    },
+    {
+      code: 'async function helper() { return 1; }\nexport default async function a() { return helper(); }',
+      filename: action,
+    },
     { code: "import { db } from '../db';", filename: action },
     { code: "import { db } from '@/server/db';", filename: plain },
     { code: "import { db } from '@/app/cart/_server/queries/load';", filename: action },
@@ -79,6 +87,36 @@ tester.run('trogonstack/no-server-action-imports', noServerActionImportsRule, {
     },
   ],
   invalid: [
+    {
+      code: 'export default async function a() { return 1; }\nexport async function b() { return a(); }',
+      filename: action,
+      errors: [calls('a')],
+    },
+    {
+      code: 'export async function a() { return 1; }\nexport default async function b() { return a(); }',
+      filename: action,
+      errors: [calls('a')],
+    },
+    {
+      code: 'export async function a() { return 1; }\nexport default async function () { return a(); }',
+      filename: action,
+      errors: [calls('a')],
+    },
+    {
+      code: 'export async function a() { return 1; }\nexport default async () => a();',
+      filename: action,
+      errors: [calls('a')],
+    },
+    {
+      code: 'const a = async () => 1;\nexport default a;\nexport async function b() { return a(); }',
+      filename: action,
+      errors: [calls('a')],
+    },
+    {
+      code: 'async function a() { return 1; }\nconst b = async () => a();\nexport default b;\nexport { a };',
+      filename: action,
+      errors: [calls('a')],
+    },
     { code: "import { add } from './remove';", filename: action, errors: [imports] },
     {
       code: "import { add } from '../actions/remove';",

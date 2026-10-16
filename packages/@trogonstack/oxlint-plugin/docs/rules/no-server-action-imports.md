@@ -11,7 +11,7 @@ Server Actions are public entry points. Chaining them hides control flow and re-
 The rule applies to files under a `server/actions` or `_server/actions` directory pair below the nearest enclosing `src` directory.
 
 - Imports (`import`, `export ... from`, `export * from`, string `import()`) whose resolved target is also under such a directory are reported. Relative specifiers and source aliases resolve into `src`; packages are ignored.
-- Calls inside an exported top-level function to another top-level function of the same file that is also exported are reported. Exports can be direct (`export async function`, `export const x = async () => {}`) or through `export { x }`. Shadowed names and recursion are ignored.
+- Calls inside an exported top-level function to another top-level function of the same file that is also exported are reported. Exports can be direct (`export async function`, `export const x = async () => {}`), default (`export default async function x() {}`, `export default x`, or an anonymous default function as the caller), or through `export { x }`. Shadowed names and recursion are ignored.
 
 ## Examples
 
