@@ -8,7 +8,7 @@ Disallow type aliases whose resolved type is unknown; unknown must remain visibl
 
 ## Detection
 
-Reports the name of a top-level (or exported) type alias whose type resolves to `unknown`, directly, through parentheses, or through another same-file non-generic alias. Generic aliases and aliases to anything else are not reported. In a chain, every alias that resolves to `unknown` is reported.
+Reports the name of a top-level (or exported) type alias whose type resolves to `unknown`, directly, through parentheses, or through another same-file non-generic alias. A generic alias declared as `unknown` is reported too, but references to generic aliases are not followed, because their type arguments are not substituted. Aliases to anything else are not reported. In a chain, every alias that resolves to `unknown` is reported.
 
 ## Examples
 
