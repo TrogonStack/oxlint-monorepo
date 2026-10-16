@@ -12,11 +12,18 @@ import {
 
 import type { ESTree } from '@oxlint/plugins';
 import { ruleDocsUrl } from '../shared/docs.ts';
+import { parseClassToken } from '../shared/tailwind.ts';
 
 function classHasHiddenReveal(value: string): boolean {
   const classes = splitClasses(value);
-  const hidden = classes.some((item) => item === 'opacity-0' || item === 'invisible');
-  const motion = classes.some((item) => /^(?:animate-|transition(?:-|$)|duration-)/.test(item));
+  const tokens = classes.map(parseClassToken);
+  const hidden = tokens.some(
+    (token) =>
+      token.variants.length === 0 && (token.base === 'opacity-0' || token.base === 'invisible'),
+  );
+  const motion = tokens.some((token) =>
+    /^(?:animate-|transition(?:-|$)|duration-)/.test(token.base),
+  );
   return hidden && motion;
 }
 

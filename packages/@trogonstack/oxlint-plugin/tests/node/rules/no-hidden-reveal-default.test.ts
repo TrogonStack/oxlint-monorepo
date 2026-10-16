@@ -6,6 +6,8 @@ const tester = new RuleTester({ languageOptions: { parserOptions: { lang: 'tsx' 
 
 tester.run('trogonstack/no-hidden-reveal-default', noHiddenRevealDefaultRule, {
   valid: [
+    'export function View() { return <section className="hover:opacity-0 transition-opacity">Visible</section>; }',
+    'export function View() { return <section className="md:invisible motion-safe:transition">Visible</section>; }',
     'export function View() { return <section className="opacity-0">Draft</section>; }',
     'export function View() { return <section className="opacity-100 transition-opacity">Visible</section>; }',
     "export function View() { return <section className={cn('opacity-100', isOpen && 'transition-opacity')}>Visible</section>; }",
@@ -14,6 +16,14 @@ tester.run('trogonstack/no-hidden-reveal-default', noHiddenRevealDefaultRule, {
     "export function View() { return <section className={cn(false && 'opacity-0', 'transition-opacity')}>Visible</section>; }",
   ],
   invalid: [
+    {
+      code: 'export function View() { return <section className="!opacity-0 transition-opacity">Hidden</section>; }',
+      errors: [{ messageId: 'hiddenReveal' }],
+    },
+    {
+      code: 'export function View() { return <section className="invisible! motion-safe:animate-fade-in">Hidden</section>; }',
+      errors: [{ messageId: 'hiddenReveal' }],
+    },
     {
       code: 'export function View() { return <section className="opacity-0 transition-opacity">Hidden</section>; }',
       errors: [{ messageId: 'hiddenReveal' }],
