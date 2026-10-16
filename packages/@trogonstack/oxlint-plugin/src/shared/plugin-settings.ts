@@ -10,6 +10,7 @@ export interface TrogonstackSettings {
   readonly demoDataModules: readonly string[];
   readonly realDataIndicators: readonly string[];
   readonly clientOnlyImports: readonly string[];
+  readonly sourceAliases: readonly string[];
 }
 
 export const DEFAULT_SETTINGS: TrogonstackSettings = {
@@ -20,6 +21,7 @@ export const DEFAULT_SETTINGS: TrogonstackSettings = {
   demoDataModules: ['@/demo', '@/mocks', '@/fixtures'],
   realDataIndicators: ['fetch', 'db', 'prisma', 'trpc'],
   clientOnlyImports: ['next/navigation', '@tanstack/react-query', 'recharts'],
+  sourceAliases: ['@/'],
 };
 
 function isStringList(value: unknown): value is string[] {
@@ -45,5 +47,6 @@ export function getTrogonstackSettings(context: Pick<Context, 'settings'>): Trog
     demoDataModules: pick('demoDataModules'),
     realDataIndicators: pick('realDataIndicators'),
     clientOnlyImports: pick('clientOnlyImports'),
+    sourceAliases: pick('sourceAliases'),
   };
 }
