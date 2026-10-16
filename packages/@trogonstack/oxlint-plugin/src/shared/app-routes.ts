@@ -27,3 +27,9 @@ export function isServerActionsPath(path: SourcePath): boolean {
       (segment === 'server' || segment === '_server') && directories[index + 1] === 'actions',
   );
 }
+
+/** Tells whether the path is itself a `server/actions` or `_server/actions` directory. */
+export function isServerActionsDirectory(path: SourcePath): boolean {
+  const [parent, name] = path.segments.slice(-2);
+  return (parent === 'server' || parent === '_server') && name === 'actions';
+}

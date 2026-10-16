@@ -31,7 +31,12 @@ function hasSafetyComment(sourceCode: SourceCode, node: TypeAssertion): boolean 
     ) {
       return true;
     }
-    if (commentOwnerKinds.has(current.type) || current.parent.type === 'Program') return false;
+    const parentType = current.parent.type;
+    if (parentType === 'ExportNamedDeclaration' || parentType === 'ExportDefaultDeclaration') {
+      current = current.parent;
+      continue;
+    }
+    if (commentOwnerKinds.has(current.type) || parentType === 'Program') return false;
     current = current.parent;
   }
 }

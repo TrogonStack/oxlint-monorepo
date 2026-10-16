@@ -61,13 +61,22 @@ export function sourceFileName(path: SourcePath): string {
   return path.segments.at(-1) ?? '';
 }
 
+function isRelativeSpecifier(specifier: string): boolean {
+  return (
+    specifier === '.' ||
+    specifier === '..' ||
+    specifier.startsWith('./') ||
+    specifier.startsWith('../')
+  );
+}
+
 /** Resolves a relative or source-aliased import specifier against the importing file, or `null` for packages. */
 export function resolveSourceImport(
   importer: SourcePath,
   specifier: string,
   sourceAliases: readonly string[],
 ): SourcePath | null {
-  if (specifier.startsWith('./') || specifier.startsWith('../')) {
+  if (isRelativeSpecifier(specifier)) {
     const segments = normalizeSegments([...sourceDirectories(importer), ...splitPath(specifier)]);
     return segments === null || segments.length === 0 ? null : { root: importer.root, segments };
   }

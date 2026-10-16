@@ -8,7 +8,7 @@ A type assertion overrides the compiler, so the reason it is sound should be wri
 
 ## Detection
 
-Flags `as T` and `<T>value` assertions that have no comment containing `SAFETY:` before them. The comment may sit immediately before the assertion, or before its containing statement (expression statement, variable declaration, return, throw, or class property). A trailing comment after the assertion does not count. `as const` and `<const>` assertions are exempt.
+Flags `as T` and `<T>value` assertions that have no comment containing `SAFETY:` before them. The comment may sit immediately before the assertion, or before its containing statement (expression statement, variable declaration, return, throw, or class property), including when that statement is exported with `export` or `export default`. A trailing comment after the assertion does not count. `as const` and `<const>` assertions are exempt.
 
 ## Examples
 

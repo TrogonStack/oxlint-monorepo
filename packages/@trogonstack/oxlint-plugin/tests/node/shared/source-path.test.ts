@@ -65,6 +65,12 @@ describe('resolveSourceImport', () => {
     ]);
   });
 
+  it('resolves dot and dot-dot specifiers to the directory itself', () => {
+    deepStrictEqual(resolveSourceImport(importer, '.', [])?.segments, ['app', 'cart']);
+    deepStrictEqual(resolveSourceImport(importer, '..', [])?.segments, ['app']);
+    strictEqual(resolveSourceImport(importer, '../../..', []), null);
+  });
+
   it('resolves aliased specifiers from the src root', () => {
     deepStrictEqual(resolveSourceImport(importer, '@/libs/money', ['@/'])?.segments, [
       'libs',

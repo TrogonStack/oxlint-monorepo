@@ -195,3 +195,35 @@ tester.run('trogonstack/no-server-action-imports', noServerActionImportsRule, {
     },
   ],
 });
+
+const fixtures = `${import.meta.dirname}/../../fixtures/server-action-imports`;
+const fixtureTester = new RuleTester({
+  cwd: fixtures,
+  languageOptions: { parserOptions: { lang: 'tsx' } },
+});
+
+fixtureTester.run('trogonstack/no-server-action-imports directories', noServerActionImportsRule, {
+  valid: [
+    {
+      code: "import { legacy } from '@/legacy/server/actions';",
+      filename: `${fixtures}/src/server/actions/remove.ts`,
+    },
+  ],
+  invalid: [
+    {
+      code: "import { add } from '@/server/actions';",
+      filename: `${fixtures}/src/server/actions/remove.ts`,
+      errors: [imports],
+    },
+    {
+      code: "import { add } from '.';",
+      filename: `${fixtures}/src/server/actions/remove.ts`,
+      errors: [imports],
+    },
+    {
+      code: "import { add } from '..';",
+      filename: `${fixtures}/src/server/actions/nested/deep.ts`,
+      errors: [imports],
+    },
+  ],
+});

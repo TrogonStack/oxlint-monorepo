@@ -2,11 +2,11 @@ import { defineRule } from '@oxlint/plugins';
 
 import type { ESTree, Scope, Variable } from '@oxlint/plugins';
 
-import { isServerActionsPath } from '../shared/app-routes.ts';
+import { isServerActionsDirectory, isServerActionsPath } from '../shared/app-routes.ts';
 import { ruleDocsUrl } from '../shared/docs.ts';
 import { importSourceVisitors } from '../shared/module-directives.ts';
 import { getTrogonstackSettings } from '../shared/plugin-settings.ts';
-import { resolveSourceImport, sourcePath } from '../shared/source-path.ts';
+import { isSourceDirectory, resolveSourceImport, sourcePath } from '../shared/source-path.ts';
 
 type FunctionNode = ESTree.ArrowFunctionExpression | ESTree.Function;
 
@@ -82,7 +82,11 @@ export const noServerActionImportsRule = defineRule({
         source,
         getTrogonstackSettings(context).sourceAliases,
       );
-      if (target !== null && isServerActionsPath(target)) {
+      if (
+        target !== null &&
+        (isServerActionsPath(target) ||
+          (isServerActionsDirectory(target) && isSourceDirectory(target)))
+      ) {
         context.report({ node, messageId: 'importsAction' });
       }
     });
