@@ -15,7 +15,7 @@ For files under `src`, checks every directory segment between `src` and the file
 - Next.js route groups, `(marketing)`, with a kebab-case name
 - dynamic segments `[id]`, `[...path]` and `[[...path]]`, whose parameter name is an identifier and may be camelCase
 - parallel routes, `@modal`, with a kebab-case name
-- intercepting routes `(.)photo`, `(..)photo` and `(...)photo`, with a kebab-case name
+- intercepting routes `(.)photo`, `(..)photo` and `(...)photo`, with a kebab-case name or a dynamic segment such as `(.)[username]`
 
 The first offending directory is reported once on the program, with a kebab-case suggestion. File names are not checked; use `unicorn/filename-case` for them. Files outside `src` are ignored.
 

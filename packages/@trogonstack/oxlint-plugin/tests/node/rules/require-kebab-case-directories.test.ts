@@ -27,6 +27,8 @@ tester.run('trogonstack/require-kebab-case-directories', requireKebabCaseDirecto
     { code: 'export {};', filename: '/repo/src/app/feed/(..)photo/page.tsx' },
     { code: 'export {};', filename: '/repo/src/app/feed/(...)photo/page.tsx' },
     { code: 'export {};', filename: '/repo/src/app/feed/(..)(..)photo/page.tsx' },
+    { code: 'export {};', filename: '/repo/src/app/@modal/(.)[username]/page.tsx' },
+    { code: 'export {};', filename: '/repo/src/app/@modal/(..)[...slug]/page.tsx' },
     { code: 'export {};', filename: '/repo/src/libs/billing-v2/index.ts' },
     { code: 'export {};', filename: '/repo/src/libs/v2/index.ts' },
     { code: 'export {};', filename: '/repo/src/Button.tsx' },
