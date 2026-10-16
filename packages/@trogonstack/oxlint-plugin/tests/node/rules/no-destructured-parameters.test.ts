@@ -26,6 +26,11 @@ tester.run('trogonstack/no-destructured-parameters', noDestructuredParametersRul
     { code: 'const Button = memo((props: Props) => <button />);', filename: 'button.tsx' },
   ],
   invalid: [
+    {
+      code: 'function Button(input = {}) { return <button />; }',
+      filename: 'button.tsx',
+      errors: [name],
+    },
     { code: 'function load({ id }) { return id; }', filename: 'load.ts', errors: [args] },
     { code: 'const load = function ({ id }) { return id; };', filename: 'load.ts', errors: [args] },
     { code: 'const load = ({ id }) => id;', filename: 'load.ts', errors: [args] },

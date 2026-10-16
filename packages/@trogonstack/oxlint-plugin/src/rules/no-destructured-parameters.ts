@@ -94,7 +94,8 @@ export const noDestructuredParametersRule = defineRule({
         }
       }
 
-      const first = node.params[0];
+      const parameter = node.params[0];
+      const first = parameter?.type === 'AssignmentPattern' ? parameter.left : parameter;
       if (kind === 'component' && first?.type === 'Identifier' && first.name !== 'props') {
         context.report({ node: first, messageId: 'componentPropsName' });
       }
