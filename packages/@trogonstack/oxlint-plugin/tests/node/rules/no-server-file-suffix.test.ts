@@ -2,7 +2,7 @@ import { RuleTester } from 'oxlint/plugins-dev';
 
 import { noServerFileSuffixRule } from '../../../src/rules/no-server-file-suffix.ts';
 
-const tester = new RuleTester();
+const tester = new RuleTester({ cwd: '/repo' });
 const error = { messageId: 'serverSuffix' };
 
 tester.run('trogonstack/no-server-file-suffix', noServerFileSuffixRule, {

@@ -19,7 +19,7 @@ export const noPagesRouterRule = defineRule({
   createOnce(context) {
     return {
       Program(node) {
-        const path = sourcePath(context.filename);
+        const path = sourcePath(context);
         if (path === null) return;
         if (sourceDirectories(path)[0] !== 'pages') return;
         context.report({ node, messageId: 'pagesRouter' });

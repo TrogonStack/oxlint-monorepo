@@ -22,7 +22,7 @@ export const noPrivateLibraryDirectoriesRule = defineRule({
   createOnce(context) {
     return {
       Program(node) {
-        const path = sourcePath(context.filename);
+        const path = sourcePath(context);
         if (path === null) return;
         const directories = sourceDirectories(path);
         if (directories[0] !== 'libs') return;

@@ -2,7 +2,7 @@ import { RuleTester } from 'oxlint/plugins-dev';
 
 import { requirePrivateAppDirectoriesRule } from '../../../src/rules/require-private-app-directories.ts';
 
-const tester = new RuleTester();
+const tester = new RuleTester({ cwd: '/repo' });
 const error = (name: string) => ({ messageId: 'publicDirectory', data: { name } });
 
 tester.run('trogonstack/require-private-app-directories', requirePrivateAppDirectoriesRule, {

@@ -2,7 +2,7 @@ import { RuleTester } from 'oxlint/plugins-dev';
 
 import { noPrivateLibraryDirectoriesRule } from '../../../src/rules/no-private-library-directories.ts';
 
-const tester = new RuleTester();
+const tester = new RuleTester({ cwd: '/repo' });
 const error = (name: string) => ({ messageId: 'privateDirectory', data: { name } });
 
 tester.run('trogonstack/no-private-library-directories', noPrivateLibraryDirectoriesRule, {

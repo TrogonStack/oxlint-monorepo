@@ -26,7 +26,8 @@ const LEXICAL_OWNER_TYPES: ReadonlySet<string> = new Set([
 ]);
 
 function isPrimaryRouteFile(filename: string): boolean {
-  return ROUTE_FILE_RE.test(filename) || PAGES_FILE_RE.test(filename);
+  const normalized = filename.replaceAll('\\', '/');
+  return ROUTE_FILE_RE.test(normalized) || PAGES_FILE_RE.test(normalized);
 }
 
 function unwrapExpression(node: Maybe<ESTree.Node>): Maybe<ESTree.Node> {

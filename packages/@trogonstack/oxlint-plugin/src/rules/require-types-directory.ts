@@ -21,7 +21,7 @@ export const requireTypesDirectoryRule = defineRule({
   createOnce(context) {
     return {
       Program(node) {
-        const path = sourcePath(context.filename);
+        const path = sourcePath(context);
         if (path === null) return;
         if (!DECLARATION_FILE.test(sourceFileName(path))) return;
         if (path.segments[0] === TYPES_DIRECTORY) return;

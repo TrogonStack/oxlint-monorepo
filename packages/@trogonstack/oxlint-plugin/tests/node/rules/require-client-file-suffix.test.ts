@@ -2,7 +2,10 @@ import { RuleTester } from 'oxlint/plugins-dev';
 
 import { requireClientFileSuffixRule } from '../../../src/rules/require-client-file-suffix.ts';
 
-const tester = new RuleTester({ languageOptions: { parserOptions: { lang: 'tsx' } } });
+const tester = new RuleTester({
+  cwd: '/repo',
+  languageOptions: { parserOptions: { lang: 'tsx' } },
+});
 const missing = { messageId: 'missingSuffix' };
 const directive = "'use client';\nexport function A() { return null; }";
 

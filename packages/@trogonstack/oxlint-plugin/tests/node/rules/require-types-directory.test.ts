@@ -2,7 +2,7 @@ import { RuleTester } from 'oxlint/plugins-dev';
 
 import { requireTypesDirectoryRule } from '../../../src/rules/require-types-directory.ts';
 
-const tester = new RuleTester();
+const tester = new RuleTester({ cwd: '/repo' });
 const error = { messageId: 'misplacedDeclaration' };
 
 tester.run('trogonstack/require-types-directory', requireTypesDirectoryRule, {
@@ -27,3 +27,14 @@ tester.run('trogonstack/require-types-directory', requireTypesDirectoryRule, {
     { code: 'export {};', filename: 'C:\\repo\\src\\app\\globals.d.ts', errors: [error] },
   ],
 });
+
+new RuleTester({ cwd: '/home/dev/src/repo' }).run(
+  'trogonstack/require-types-directory (checkout inside a src directory)',
+  requireTypesDirectoryRule,
+  {
+    valid: [{ code: 'export {};', filename: '/home/dev/src/repo/next-env.d.ts' }],
+    invalid: [
+      { code: 'export {};', filename: '/home/dev/src/repo/src/app/env.d.ts', errors: [error] },
+    ],
+  },
+);

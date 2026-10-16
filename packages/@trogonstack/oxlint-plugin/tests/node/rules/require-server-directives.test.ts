@@ -2,7 +2,10 @@ import { RuleTester } from 'oxlint/plugins-dev';
 
 import { requireServerDirectivesRule } from '../../../src/rules/require-server-directives.ts';
 
-const tester = new RuleTester({ languageOptions: { parserOptions: { lang: 'tsx' } } });
+const tester = new RuleTester({
+  cwd: '/repo',
+  languageOptions: { parserOptions: { lang: 'tsx' } },
+});
 const noDirective = { messageId: 'missingUseServer' };
 const noServerOnly = { messageId: 'missingServerOnly' };
 const full = "'use server';\nimport 'server-only';\nexport const a = 1;";

@@ -28,7 +28,7 @@ export const requireClientFileSuffixRule = defineRule({
         const fileName = context.filename.replaceAll('\\', '/').split('/').at(-1) ?? '';
         if (CLIENT_FILE.test(fileName)) return;
 
-        const path = sourcePath(context.filename);
+        const path = sourcePath(context);
         if (path !== null && path.segments[0] === 'app') {
           const baseName = sourceFileName(path).split('.')[0] ?? '';
           if (REQUIRED_CLIENT_BASE_NAMES.has(baseName)) return;

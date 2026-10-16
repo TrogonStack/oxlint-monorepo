@@ -2,7 +2,10 @@ import { RuleTester } from 'oxlint/plugins-dev';
 
 import { noServerActionImportsRule } from '../../../src/rules/no-server-action-imports.ts';
 
-const tester = new RuleTester({ languageOptions: { parserOptions: { lang: 'tsx' } } });
+const tester = new RuleTester({
+  cwd: '/repo',
+  languageOptions: { parserOptions: { lang: 'tsx' } },
+});
 const action = '/repo/src/app/cart/_server/actions/add.ts';
 const plain = '/repo/apps/web/src/server/actions/add.ts';
 const imports = { messageId: 'importsAction' };

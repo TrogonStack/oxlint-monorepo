@@ -22,7 +22,7 @@ export const requireServerDirectivesRule = defineRule({
   createOnce(context) {
     return {
       Program(node) {
-        const path = sourcePath(context.filename);
+        const path = sourcePath(context);
         if (path === null) return;
         const isServerFile = sourceDirectories(path).some(
           (segment) => segment === 'server' || segment === '_server',

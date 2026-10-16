@@ -23,10 +23,27 @@ function normalizeSegments(segments: readonly string[]): string[] | null {
   return normalized;
 }
 
-/** Locates a file under the nearest enclosing `src` directory, returning its segments relative to it. */
-export function sourcePath(filename: string): SourcePath | null {
-  const parts = splitPath(filename);
-  const index = parts.lastIndexOf(SOURCE_DIRECTORY);
+export interface SourceFile {
+  readonly filename: string;
+  readonly cwd: string;
+}
+
+function relativeToCwd(parts: readonly string[], cwd: string): readonly string[] | null {
+  const cwdParts = splitPath(cwd).filter((part, index) => part !== '' || index === 0);
+  const isInside = cwdParts.every((part, index) => parts[index] === part);
+  return isInside && parts.length > cwdParts.length ? parts.slice(cwdParts.length) : null;
+}
+
+/** Locates a file under its project's `src` directory: the first one below `cwd`, or the nearest one for files outside it. */
+export function sourcePath(file: SourceFile): SourcePath | null {
+  const parts = splitPath(file.filename);
+  const relative = relativeToCwd(parts, file.cwd);
+  const index =
+    relative === null
+      ? parts.lastIndexOf(SOURCE_DIRECTORY)
+      : relative.includes(SOURCE_DIRECTORY)
+        ? parts.length - relative.length + relative.indexOf(SOURCE_DIRECTORY)
+        : -1;
   if (index === -1 || index === parts.length - 1) return null;
   const segments = normalizeSegments(parts.slice(index + 1));
   if (segments === null || segments.length === 0) return null;

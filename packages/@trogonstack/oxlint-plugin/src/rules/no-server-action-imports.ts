@@ -74,7 +74,7 @@ export const noServerActionImportsRule = defineRule({
 
     const visitors = importSourceVisitors((node, source) => {
       if (!isActionsFile) return;
-      const importer = sourcePath(context.filename);
+      const importer = sourcePath(context);
       if (importer === null) return;
       const target = resolveSourceImport(
         importer,
@@ -92,7 +92,7 @@ export const noServerActionImportsRule = defineRule({
         exportedFunctions.clear();
       },
       Program(node) {
-        const path = sourcePath(context.filename);
+        const path = sourcePath(context);
         isActionsFile = path !== null && isServerActionsPath(path);
         if (!isActionsFile) return;
 

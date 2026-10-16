@@ -62,6 +62,11 @@ tester.run('trogonstack/no-demo-data-primary-path', noDemoDataPrimaryPathRule, {
       errors: [{ messageId: 'demoDataPrimary' }],
     },
     {
+      filename: 'C:\\repo\\app\\dashboard\\page.tsx',
+      code: "import { rows } from '@/fixtures/rows';\nexport function Page() { return rows; }",
+      errors: [{ messageId: 'demoDataPrimary' }],
+    },
+    {
       filename: '/repo/app/page.tsx',
       code: "import { rows } from '@/fixtures/rows';\nexport function Page() { return { [rows]: true }; }",
       errors: [{ messageId: 'demoDataPrimary' }],

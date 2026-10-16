@@ -21,7 +21,7 @@ export const noCrossRouteImportsRule = defineRule({
   },
   createOnce(context) {
     return importSourceVisitors((node, source) => {
-      const importer = sourcePath(context.filename);
+      const importer = sourcePath(context);
       if (importer === null) return;
       const importerRoute = routeSegments(importer);
       if (importerRoute === null) return;

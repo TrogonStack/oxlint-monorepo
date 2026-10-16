@@ -2,7 +2,7 @@ import { RuleTester } from 'oxlint/plugins-dev';
 
 import { noPagesRouterRule } from '../../../src/rules/no-pages-router.ts';
 
-const tester = new RuleTester();
+const tester = new RuleTester({ cwd: '/repo' });
 const error = { messageId: 'pagesRouter' };
 
 tester.run('trogonstack/no-pages-router', noPagesRouterRule, {

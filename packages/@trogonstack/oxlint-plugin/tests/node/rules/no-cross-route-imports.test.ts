@@ -2,7 +2,10 @@ import { RuleTester } from 'oxlint/plugins-dev';
 
 import { noCrossRouteImportsRule } from '../../../src/rules/no-cross-route-imports.ts';
 
-const tester = new RuleTester({ languageOptions: { parserOptions: { lang: 'tsx' } } });
+const tester = new RuleTester({
+  cwd: '/repo',
+  languageOptions: { parserOptions: { lang: 'tsx' } },
+});
 const cart = '/repo/src/app/(shop)/cart/page.tsx';
 const dynamic = '/repo/src/app/(shop)/products/[id]/page.tsx';
 const monorepo = '/repo/apps/web/src/app/checkout/page.tsx';
