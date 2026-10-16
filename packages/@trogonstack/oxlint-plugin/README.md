@@ -79,6 +79,38 @@ The copy, data, client-boundary and project-structure rules read shared lists fr
 
 The structure rules enforce [ADR 5541831634](https://github.com/straw-hat-team/adr/blob/main/src/adrs/5541831634/README.md). Circular dependencies between sibling directories and libraries are covered by Oxlint's built-in `import/no-cycle` rule, so these rules do not duplicate it. Relative imports that climb to a parent directory are covered by the built-in `import/no-relative-parent-imports` rule, and `require-import-locality` covers the aliased half of the import style. Re-exports are covered in part by the built-in `oxc/no-barrel-file` rule, which reports barrel files that re-export with `export *`; named re-exports are not reported by it.
 
+### Presets
+
+The package ships Oxlint configs that enable the project-structure rules for a framework, so you do not pick them one by one. Oxlint resolves `extends` as a file path, not as a package specifier, so point it at the file inside `node_modules`:
+
+```json
+{
+  "extends": ["./node_modules/@trogonstack/oxlint-plugin/configs/nextjs.json"]
+}
+```
+
+```json
+{
+  "extends": ["./node_modules/@trogonstack/oxlint-plugin/configs/vite.json"]
+}
+```
+
+Both presets extend `configs/project-structure.json`, which registers the plugin, enables the ADR rules and turns on the built-in `import/no-cycle`, `import/no-relative-parent-imports` and `oxc/no-barrel-file` rules. The structure rules are errors, except `require-import-locality` and the two softer built-ins, which are warnings. The Next.js preset adds the App Router rules, and the Vite preset adds `require-app-entry-file`. Neither preset enables the copy, UI or type-safety rules.
+
+Oxlint does not merge `settings` from an extended config, so set `settings.trogonstack` in your own `.oxlintrc.json` when you need `sourceAliases` or the other lists above. The presets list the `import` and `oxc` plugins, and Oxlint adds them to its default plugins unless your config sets `plugins` itself.
+
+Rules you set in your own config win over the preset, so you can change a severity or turn a rule off:
+
+```json
+{
+  "extends": ["./node_modules/@trogonstack/oxlint-plugin/configs/nextjs.json"],
+  "rules": {
+    "trogonstack/require-import-locality": "off",
+    "oxc/no-barrel-file": "error"
+  }
+}
+```
+
 ## Rules
 
 <!-- rules:start -->

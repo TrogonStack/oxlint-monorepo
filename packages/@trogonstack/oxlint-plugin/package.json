@@ -16,6 +16,7 @@
     "directory": "packages/@trogonstack/oxlint-plugin"
   },
   "files": [
+    "configs",
     "dist",
     "LICENSE",
     "README.md"
@@ -28,7 +29,8 @@
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
-    }
+    },
+    "./configs/*": "./configs/*"
   },
   "publishConfig": {
     "access": "public",

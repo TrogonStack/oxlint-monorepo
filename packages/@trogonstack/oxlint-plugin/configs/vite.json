@@ -1,0 +1,6 @@
+{
+  "extends": ["./project-structure.json"],
+  "rules": {
+    "trogonstack/require-app-entry-file": "error"
+  }
+}
