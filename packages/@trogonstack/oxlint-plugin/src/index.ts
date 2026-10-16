@@ -12,6 +12,7 @@ import { noExcessiveRadiusRule } from './rules/no-excessive-radius.ts';
 import { noGenericStatLabelRule } from './rules/no-generic-stat-label.ts';
 import { noGradientTextRule } from './rules/no-gradient-text.ts';
 import { noHiddenRevealDefaultRule } from './rules/no-hidden-reveal-default.ts';
+import { requireColocatedCssModulesRule } from './rules/require-colocated-css-modules.ts';
 import { requireColocatedModulesRule } from './rules/require-colocated-modules.ts';
 import { noKnownValueWideningRule } from './rules/no-known-value-widening.ts';
 import { noMarketingCopyRule } from './rules/no-marketing-copy.ts';
@@ -43,6 +44,7 @@ import { requireClientFileSuffixRule } from './rules/require-client-file-suffix.
 import { requireColocatedUnitTestsRule } from './rules/require-colocated-unit-tests.ts';
 import { requireEmptyStateActionRule } from './rules/require-empty-state-action.ts';
 import { requireFractalDirectoriesRule } from './rules/require-fractal-directories.ts';
+import { requireImportLocalityRule } from './rules/require-import-locality.ts';
 import { requireLocaleRouteParameterRule } from './rules/require-locale-route-parameter.ts';
 import { requirePrivateAppDirectoriesRule } from './rules/require-private-app-directories.ts';
 import { requireReducedMotionRule } from './rules/require-reduced-motion.ts';
@@ -66,6 +68,7 @@ const trogonstackPlugin = eslintCompatPlugin({
     'no-generic-stat-label': noGenericStatLabelRule,
     'no-gradient-text': noGradientTextRule,
     'no-hidden-reveal-default': noHiddenRevealDefaultRule,
+    'require-colocated-css-modules': requireColocatedCssModulesRule,
     'require-colocated-modules': requireColocatedModulesRule,
     'no-known-value-widening': noKnownValueWideningRule,
     'no-marketing-copy': noMarketingCopyRule,
@@ -97,6 +100,7 @@ const trogonstackPlugin = eslintCompatPlugin({
     'require-colocated-unit-tests': requireColocatedUnitTestsRule,
     'require-empty-state-action': requireEmptyStateActionRule,
     'require-fractal-directories': requireFractalDirectoriesRule,
+    'require-import-locality': requireImportLocalityRule,
     'require-locale-route-parameter': requireLocaleRouteParameterRule,
     'require-private-app-directories': requirePrivateAppDirectoriesRule,
     'require-reduced-motion': requireReducedMotionRule,

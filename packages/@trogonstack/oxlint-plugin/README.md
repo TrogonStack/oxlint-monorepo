@@ -77,7 +77,7 @@ The copy, data, client-boundary and project-structure rules read shared lists fr
 }
 ```
 
-The structure rules enforce [ADR 5541831634](https://github.com/straw-hat-team/adr/blob/main/src/adrs/5541831634/README.md). Circular dependencies between sibling directories and libraries are covered by Oxlint's built-in `import/no-cycle` rule, so these rules do not duplicate it.
+The structure rules enforce [ADR 5541831634](https://github.com/straw-hat-team/adr/blob/main/src/adrs/5541831634/README.md). Circular dependencies between sibling directories and libraries are covered by Oxlint's built-in `import/no-cycle` rule, so these rules do not duplicate it. Relative imports that climb to a parent directory are covered by the built-in `import/no-relative-parent-imports` rule, and `require-import-locality` covers the aliased half of the import style. Re-exports are covered in part by the built-in `oxc/no-barrel-file` rule, which reports barrel files that re-export with `export *`; named re-exports are not reported by it.
 
 ## Rules
 
@@ -124,10 +124,12 @@ The structure rules enforce [ADR 5541831634](https://github.com/straw-hat-team/a
 | [`trogonstack/require-app-entry-file`](docs/rules/require-app-entry-file.md)                                       | Require the application entry to be `src/app/index.tsx` instead of `src/main` or `src/index`.                                                      |
 | [`trogonstack/require-client-component-suffix`](docs/rules/require-client-component-suffix.md)                     | Require client components to be named with a `Client` suffix instead of being aliased on import.                                                   |
 | [`trogonstack/require-client-file-suffix`](docs/rules/require-client-file-suffix.md)                               | Require files with a `use client` directive to be named `*.client.*`.                                                                              |
+| [`trogonstack/require-colocated-css-modules`](docs/rules/require-colocated-css-modules.md)                         | Require a CSS Module to be imported only by the component that owns it, from its sibling `[component name].module.[extension]` file.               |
 | [`trogonstack/require-colocated-modules`](docs/rules/require-colocated-modules.md)                                 | Require modules to sit in the closest fractal directory that contains every consumer, neither higher nor lower.                                    |
 | [`trogonstack/require-colocated-unit-tests`](docs/rules/require-colocated-unit-tests.md)                           | Require unit tests to sit next to the file they test instead of inside `__tests__`.                                                                |
 | [`trogonstack/require-empty-state-action`](docs/rules/require-empty-state-action.md)                               | Require explicit actions in local empty-state UI blocks.                                                                                           |
 | [`trogonstack/require-fractal-directories`](docs/rules/require-fractal-directories.md)                             | Require every directory under `src` to follow the fractal directory pattern of ADR 5541831634.                                                     |
+| [`trogonstack/require-import-locality`](docs/rules/require-import-locality.md)                                     | Require relative imports for files in the importing directory or below it, instead of a source alias.                                              |
 | [`trogonstack/require-locale-route-parameter`](docs/rules/require-locale-route-parameter.md)                       | Require the `[locale]` dynamic segment for internationalized routes under `src/app`.                                                               |
 | [`trogonstack/require-private-app-directories`](docs/rules/require-private-app-directories.md)                     | Require fractal directories under `src/app` to be private folders prefixed with an underscore.                                                     |
 | [`trogonstack/require-reduced-motion`](docs/rules/require-reduced-motion.md)                                       | Require a type-matched reduced-motion fallback when static UI code declares motion.                                                                |
