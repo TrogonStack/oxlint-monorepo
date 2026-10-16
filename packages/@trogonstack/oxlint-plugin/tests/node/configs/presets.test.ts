@@ -309,6 +309,9 @@ describe('configs', () => {
       'src/app/docs/[...path]/page.tsx',
       'src/app/docs/[[...path]]/page.tsx',
       'src/app/blog/[slug].tsx',
+      'src/app/users/[userId].tsx',
+      'src/app/docs/[...filePath].tsx',
+      'src/app/docs/[[...filePath]].tsx',
       'src/components/button/button.client.tsx',
       'src/components/button/button.test.tsx',
       'src/app/(marketing)/_components/hero.tsx',
@@ -316,6 +319,13 @@ describe('configs', () => {
       'src/lib/globals.d.ts',
     ]) {
       deepStrictEqual(lint(root, file, 'export const x = 1;\n'), [], file);
+    }
+  });
+
+  it('still reports non-kebab files that only resemble dynamic segments', () => {
+    const root = createProject('dynamic-lookalikes', extending('naming'));
+    for (const file of ['src/app/users/UserCard.tsx', 'src/app/users/[userId]Card.tsx']) {
+      ok(lint(root, file, 'export const x = 1;\n').includes('unicorn(filename-case)'), file);
     }
   });
 });

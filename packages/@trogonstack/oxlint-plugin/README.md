@@ -135,19 +135,7 @@ To compose your own set, extend the building blocks you want instead of a preset
 
 Oxlint does not merge `settings` from an extended config, so set `settings.trogonstack` in your own `.oxlintrc.json` when you need `sourceAliases` or the other lists above. The configs list the `import`, `oxc` and `unicorn` plugins where they need them, and Oxlint adds them to its default plugins unless your config sets `plugins` itself.
 
-`unicorn/filename-case` accepts the Next.js special files (`page.tsx`, `layout.tsx`, `not-found.tsx`, `route.ts`), dynamic segment folders such as `[slug]`, and suffixes such as `button.client.tsx` and `button.test.tsx`. It reports a dynamic segment file whose parameter is not kebab-case, such as `[userId].tsx`. Ignore those files in your own config; `ignore` takes a list of regular expressions:
-
-```json
-{
-  "extends": ["./node_modules/@trogonstack/oxlint-plugin/configs/nextjs.json"],
-  "rules": {
-    "unicorn/filename-case": [
-      "error",
-      { "case": "kebabCase", "ignore": ["^\\[{1,2}(\\.\\.\\.)?[A-Za-z0-9_-]+\\]{1,2}\\."] }
-    ]
-  }
-}
-```
+`unicorn/filename-case` accepts the Next.js special files (`page.tsx`, `layout.tsx`, `not-found.tsx`, `route.ts`), dynamic segment files and folders such as `[slug]` and `[userId].tsx`, and suffixes such as `button.client.tsx` and `button.test.tsx`.
 
 Rules you set in your own config win over the extended configs, so you can change a severity or turn a rule off:
 
