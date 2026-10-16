@@ -12,14 +12,22 @@ function isKebab(value: string): boolean {
   return KEBAB.test(value);
 }
 
+function isRouteSegment(segment: string): boolean {
+  return isKebab(segment) || isDynamicSegment(segment);
+}
+
 function isAllowedSegment(segment: string): boolean {
   if (RESERVED.has(segment)) return true;
-  if (isKebab(segment)) return true;
+  if (isRouteSegment(segment)) return true;
   if (segment.startsWith('_')) return isKebab(segment.slice(1));
   if (segment.startsWith('@')) return isKebab(segment.slice(1));
   const intercepting = INTERCEPTING.exec(segment);
-  if (intercepting !== null) return isKebab(segment.slice(intercepting[0].length));
+  if (intercepting !== null) return isRouteSegment(segment.slice(intercepting[0].length));
   if (segment.startsWith('(') && segment.endsWith(')')) return isKebab(segment.slice(1, -1));
+  return false;
+}
+
+function isDynamicSegment(segment: string): boolean {
   if (segment.startsWith('[[...') && segment.endsWith(']]')) {
     return PARAMETER.test(segment.slice(5, -2));
   }
