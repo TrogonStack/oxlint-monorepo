@@ -59,6 +59,7 @@ export function isLikelyUserFacingString(node: ESTree.Node): boolean {
 
   if (parent.type === 'Property') {
     const key = parent.key;
+    if (key === node) return false;
     const keyName =
       key.type === 'Identifier' && !parent.computed
         ? key.name

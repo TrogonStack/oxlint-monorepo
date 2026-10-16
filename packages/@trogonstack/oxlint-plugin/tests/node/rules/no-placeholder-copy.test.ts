@@ -21,6 +21,9 @@ tester.run('trogonstack/no-placeholder-copy', noPlaceholderCopyRule, {
     {
       code: "export function View() { return <input className={'placeholder:text-muted'} />; }",
     },
+    {
+      code: "const copy = { 'placeholder': 'Search projects' };",
+    },
   ],
   invalid: [
     {
