@@ -6,6 +6,7 @@ import { noConditionalEmptyObjectSpreadRule } from './rules/no-conditional-empty
 import { noDecorativeGridBackgroundRule } from './rules/no-decorative-grid-background.ts';
 import { noDefensiveGuardSprawlRule } from './rules/no-defensive-guard-sprawl.ts';
 import { noDemoDataPrimaryPathRule } from './rules/no-demo-data-primary-path.ts';
+import { noDestructuredParametersRule } from './rules/no-destructured-parameters.ts';
 import { noExcessiveRadiusRule } from './rules/no-excessive-radius.ts';
 import { noGenericStatLabelRule } from './rules/no-generic-stat-label.ts';
 import { noGradientTextRule } from './rules/no-gradient-text.ts';
@@ -42,6 +43,7 @@ const trogonstackPlugin = eslintCompatPlugin({
     'no-decorative-grid-background': noDecorativeGridBackgroundRule,
     'no-defensive-guard-sprawl': noDefensiveGuardSprawlRule,
     'no-demo-data-primary-path': noDemoDataPrimaryPathRule,
+    'no-destructured-parameters': noDestructuredParametersRule,
     'no-excessive-radius': noExcessiveRadiusRule,
     'no-generic-stat-label': noGenericStatLabelRule,
     'no-gradient-text': noGradientTextRule,
