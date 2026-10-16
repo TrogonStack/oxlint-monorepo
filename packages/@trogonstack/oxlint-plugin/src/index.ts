@@ -35,7 +35,9 @@ import { noUnsafeDictionaryTypeRule } from './rules/no-unsafe-dictionary-type.ts
 import { noUselessMemoRule } from './rules/no-useless-memo.ts';
 import { noWidenThenAssertRule } from './rules/no-widen-then-assert.ts';
 import { requireClientFileSuffixRule } from './rules/require-client-file-suffix.ts';
+import { requireColocatedUnitTestsRule } from './rules/require-colocated-unit-tests.ts';
 import { requireEmptyStateActionRule } from './rules/require-empty-state-action.ts';
+import { requireFractalDirectoriesRule } from './rules/require-fractal-directories.ts';
 import { requirePrivateAppDirectoriesRule } from './rules/require-private-app-directories.ts';
 import { requireReducedMotionRule } from './rules/require-reduced-motion.ts';
 import { requireSafetyCommentForTypeAssertionRule } from './rules/require-safety-comment-for-type-assertion.ts';
@@ -81,7 +83,9 @@ const trogonstackPlugin = eslintCompatPlugin({
     'no-useless-memo': noUselessMemoRule,
     'no-widen-then-assert': noWidenThenAssertRule,
     'require-client-file-suffix': requireClientFileSuffixRule,
+    'require-colocated-unit-tests': requireColocatedUnitTestsRule,
     'require-empty-state-action': requireEmptyStateActionRule,
+    'require-fractal-directories': requireFractalDirectoriesRule,
     'require-private-app-directories': requirePrivateAppDirectoriesRule,
     'require-reduced-motion': requireReducedMotionRule,
     'require-safety-comment-for-type-assertion': requireSafetyCommentForTypeAssertionRule,

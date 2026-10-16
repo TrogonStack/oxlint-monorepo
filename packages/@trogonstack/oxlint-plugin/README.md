@@ -54,6 +54,8 @@ The copy, data, client-boundary and project-structure rules read shared lists fr
 }
 ```
 
+The structure rules enforce [ADR 5541831634](https://github.com/straw-hat-team/adr/blob/main/src/adrs/5541831634/README.md). Circular dependencies between sibling directories and libraries are covered by Oxlint's built-in `import/no-cycle` rule, so these rules do not duplicate it.
+
 ## Rules
 
 <!-- rules:start -->
@@ -95,7 +97,9 @@ The copy, data, client-boundary and project-structure rules read shared lists fr
 | [`trogonstack/no-useless-memo`](docs/rules/no-useless-memo.md)                                                     | Discourage trivial useMemo/useCallback usage.                                                                                                      |
 | [`trogonstack/no-widen-then-assert`](docs/rules/no-widen-then-assert.md)                                           | Disallow local const flows that explicitly widen a known value before asserting the widened binding to a narrower type.                            |
 | [`trogonstack/require-client-file-suffix`](docs/rules/require-client-file-suffix.md)                               | Require files with a `use client` directive to be named `*.client.*`.                                                                              |
+| [`trogonstack/require-colocated-unit-tests`](docs/rules/require-colocated-unit-tests.md)                           | Require unit tests to sit next to the file they test instead of inside `__tests__`.                                                                |
 | [`trogonstack/require-empty-state-action`](docs/rules/require-empty-state-action.md)                               | Require explicit actions in local empty-state UI blocks.                                                                                           |
+| [`trogonstack/require-fractal-directories`](docs/rules/require-fractal-directories.md)                             | Require every directory under `src` to follow the fractal directory pattern of ADR 5541831634.                                                     |
 | [`trogonstack/require-private-app-directories`](docs/rules/require-private-app-directories.md)                     | Require fractal directories under `src/app` to be private folders prefixed with an underscore.                                                     |
 | [`trogonstack/require-reduced-motion`](docs/rules/require-reduced-motion.md)                                       | Require a type-matched reduced-motion fallback when static UI code declares motion.                                                                |
 | [`trogonstack/require-safety-comment-for-type-assertion`](docs/rules/require-safety-comment-for-type-assertion.md) | Require a nearby SAFETY comment for every TypeScript type assertion except const assertions.                                                       |
