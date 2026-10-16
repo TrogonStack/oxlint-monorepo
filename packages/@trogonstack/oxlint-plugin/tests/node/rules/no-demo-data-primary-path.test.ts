@@ -2,10 +2,22 @@ import { RuleTester } from 'oxlint/plugins-dev';
 
 import { noDemoDataPrimaryPathRule } from '../../../src/rules/no-demo-data-primary-path.ts';
 
-const tester = new RuleTester({ languageOptions: { parserOptions: { lang: 'tsx' } } });
+const tester = new RuleTester({
+  cwd: '/repo',
+  languageOptions: { parserOptions: { lang: 'tsx' } },
+});
 
 tester.run('trogonstack/no-demo-data-primary-path', noDemoDataPrimaryPathRule, {
   valid: [
+    {
+      cwd: '/app',
+      filename: '/app/src/components/page.tsx',
+      code: "import { rows } from '@/fixtures/rows';\nexport function Page() { return rows; }",
+    },
+    {
+      filename: '/repo/src/features/app/page.tsx',
+      code: "import { rows } from '@/fixtures/rows';\nexport function Page() { return rows; }",
+    },
     {
       filename: '/repo/app/dashboard/page.tsx',
       code: "import { rows } from '@/fixtures/rows';\nexport async function Page() { const data = await fetch('/api/rows'); return data; }",
@@ -57,12 +69,18 @@ tester.run('trogonstack/no-demo-data-primary-path', noDemoDataPrimaryPathRule, {
   ],
   invalid: [
     {
+      filename: '/repo/apps/web/src/app/dashboard/page.tsx',
+      code: "import { rows } from '@/fixtures/rows';\nexport function Page() { return rows; }",
+      errors: [{ messageId: 'demoDataPrimary' }],
+    },
+    {
       filename: '/repo/app/dashboard/page.tsx',
       code: "import { rows } from '@/fixtures/rows';\nexport function Page() { return rows; }",
       errors: [{ messageId: 'demoDataPrimary' }],
     },
     {
-      filename: 'C:\\repo\\app\\dashboard\\page.tsx',
+      cwd: 'C:\\repo',
+      filename: 'app\\dashboard\\page.tsx',
       code: "import { rows } from '@/fixtures/rows';\nexport function Page() { return rows; }",
       errors: [{ messageId: 'demoDataPrimary' }],
     },

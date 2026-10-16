@@ -4,13 +4,15 @@ import type { ESTree, Scope, SourceCode, Variable } from '@oxlint/plugins';
 
 import { getTrogonstackSettings } from '../shared/plugin-settings.ts';
 import { ruleDocsUrl } from '../shared/docs.ts';
+import { sourcePath } from '../shared/source-path.ts';
+import type { SourceFile } from '../shared/source-path.ts';
 
 type Maybe<T> = T | null | undefined;
 
 type NamedIdentifier = Extract<ESTree.Node, { type: 'Identifier'; name: string }>;
 
-const ROUTE_FILE_RE = /(?:^|\/)(?:src\/)?app\/(?:.*\/)?(?:page|layout|route)\.(?:t|j)sx?$/;
-const PAGES_FILE_RE = /(?:^|\/)(?:src\/)?pages\/.*\.(?:t|j)sx?$/;
+const ROUTE_FILE_RE = /^app\/(?:.*\/)?(?:page|layout|route)\.(?:t|j)sx?$/;
+const PAGES_FILE_RE = /^pages\/.*\.(?:t|j)sx?$/;
 const TYPE_WRAPPER_TYPES: ReadonlySet<string> = new Set([
   'TSAsExpression',
   'TSTypeAssertion',
@@ -25,9 +27,16 @@ const LEXICAL_OWNER_TYPES: ReadonlySet<string> = new Set([
   'Program',
 ]);
 
-function isPrimaryRouteFile(filename: string): boolean {
-  const normalized = filename.replaceAll('\\', '/');
-  return ROUTE_FILE_RE.test(normalized) || PAGES_FILE_RE.test(normalized);
+function isPrimaryRoutePath(path: string): boolean {
+  return ROUTE_FILE_RE.test(path) || PAGES_FILE_RE.test(path);
+}
+
+function isPrimaryRouteFile(file: SourceFile): boolean {
+  const source = sourcePath(file);
+  if (source !== null && isPrimaryRoutePath(source.segments.join('/'))) return true;
+  const filename = file.filename.replaceAll('\\', '/');
+  const cwd = file.cwd.replaceAll('\\', '/').replace(/\/$/, '');
+  return filename.startsWith(`${cwd}/`) && isPrimaryRoutePath(filename.slice(cwd.length + 1));
 }
 
 function unwrapExpression(node: Maybe<ESTree.Node>): Maybe<ESTree.Node> {
@@ -221,7 +230,7 @@ export const noDemoDataPrimaryPathRule = defineRule({
         sideEffectDemoImports.length = 0;
         demoReferences.length = 0;
         realDataVariables.clear();
-        return isPrimaryRouteFile(context.filename);
+        return isPrimaryRouteFile(context);
       },
       ImportDeclaration(node) {
         const source = node.source.value;

@@ -8,7 +8,7 @@ Demo or fixture data on a real route makes an app look done while doing nothing.
 
 ## Detection
 
-Applies to primary route files: `page`, `layout`, and `route` modules under `app/` (including `src/app/`), and any module under `pages/` (including `src/pages/`).
+Applies to primary route files: `page`, `layout`, and `route` modules under `src/app/` or a top-level `app/`, and any module under `src/pages/` or a top-level `pages/`. A folder named `app` deeper in the tree, or a project checked out at `/app`, does not count.
 
 A runtime binding imported from a configured demo module (`settings.trogonstack.demoDataModules`, default: `@/demo`, `@/mocks`, `@/fixtures`, including their subpaths) is allowed only as the right-hand side of `??` when its left-hand side is a real-data call or that call's immutable `const` result in the same lexical scope. A real-data call is a call whose callee chain starts with a name from `settings.trogonstack.realDataIndicators` (default: `fetch`, `db`, `prisma`, `trpc`), such as `fetch(...)`, `db.report.findMany()`, or `trpc.rows.list.useQuery()`. Type-only imports and type-only references are not runtime fixture use.
 
