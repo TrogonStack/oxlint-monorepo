@@ -2,12 +2,18 @@
 
 ## Setup
 
-Tool versions come from [mise](https://mise.jdx.dev):
+This is a [pnpm](https://pnpm.io/workspaces) monorepo, and tool versions come from [mise](https://mise.jdx.dev). From the repo root:
 
 ```bash
 mise install
 pnpm install
 ```
+
+Shared configuration lives at the root: `.oxlintrc.json`, `.oxfmtrc.json`, and `tsconfig.base.json`. Packages extend those rather than redefining them.
+
+## Tasks
+
+Task scripts follow [ADR#6647967335](https://github.com/straw-hat-team/adr/blob/main/src/adrs/6647967335/README.md). They are mise file tasks under `.config/mise/tasks/`, and a package keeps its own tasks under its own `.config/mise/tasks/`. Every script a GitHub Actions workflow runs lives under `.config/mise/tasks/github/workflows/<workflow>/` and is invoked as `mise run github:workflows:<workflow>:<step>`. Steps shared by several workflows are composite actions under `.github/actions/<name>/`, with their scripts under `.config/mise/tasks/github/actions/<name>/`.
 
 ## Checks
 
@@ -22,7 +28,7 @@ pnpm run docs:check
 
 `typecheck`, `build`, `test`, and `docs:check` fan out to every workspace package.
 
-Package READMEs that list rules generate that list from each rule's `meta.docs.description`. After adding or changing a rule, run `pnpm run docs` in the package directory and commit the README.
+Package READMEs that list rules generate that list from each rule's `meta.docs.description`. After adding or changing a rule, run `mise run docs:sync` in the package directory and commit the README.
 
 Every code block under `## Examples` in `docs/rules/<rule>.md` is linted with the real plugin build by `pnpm run docs:check` (run `pnpm run build` first). A block inherits the nearest preceding `Invalid...:` or `Valid...:` label. Invalid blocks must report the rule, valid blocks must not, and neither may contain syntax errors. Blocks use `ts`, `tsx`, `js`, or `jsx` fences. A leading `// path/to/file.tsx` comment sets the file name the block is linted as, which matters for rules that depend on the path. Rule options and shared settings go in the fence info string as JSON, for example ` ```ts options='{"allowInTypeGuards":true}' ` or `settings='{...}'`.
 

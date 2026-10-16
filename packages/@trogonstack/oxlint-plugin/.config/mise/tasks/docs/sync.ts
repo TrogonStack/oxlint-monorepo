@@ -1,14 +1,16 @@
+#!/usr/bin/env node
+//MISE description="Regenerate the README rules table and validate rule docs (--check to verify only)"
 import { readdir, readFile, writeFile } from 'node:fs/promises';
 
 import { format } from 'oxfmt';
 
-import plugin from '../src/index.ts';
-import { ruleDocsUrl } from '../src/shared/docs.ts';
+import plugin from '../../../../src/index.ts';
+import { ruleDocsUrl } from '../../../../src/shared/docs.ts';
 
 const START_MARKER = '<!-- rules:start -->';
 const END_MARKER = '<!-- rules:end -->';
-const readmeUrl = new URL('../README.md', import.meta.url);
-const docsDirUrl = new URL('../docs/rules/', import.meta.url);
+const readmeUrl = new URL('../../../../README.md', import.meta.url);
+const docsDirUrl = new URL('../../../../docs/rules/', import.meta.url);
 
 const rules = Object.entries(plugin.rules).toSorted(([left], [right]) => left.localeCompare(right));
 

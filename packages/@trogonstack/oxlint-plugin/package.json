@@ -38,8 +38,8 @@
     "build": "tsc -p tsconfig.build.json",
     "test": "node --test \"tests/node/**/*.test.ts\"",
     "typecheck": "tsc -p tsconfig.json",
-    "docs": "node bin/sync-readme-rules.ts",
-    "docs:check": "node bin/sync-readme-rules.ts --check && node bin/check-rule-examples.ts"
+    "docs": "mise run docs:sync",
+    "docs:check": "mise run docs:check"
   },
   "dependencies": {
     "@oxlint/plugins": "^1.88.0"

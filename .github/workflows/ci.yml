@@ -23,28 +23,20 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Install tools
-        uses: jdx/mise-action@2d8d4cafcbd33be2ea37d2b6f5ad595363d1f1ca # v5.1.1
-        with:
-          version: 2026.9.1
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+      - name: Build
+        uses: ./.github/actions/build
 
       - name: Format check
-        run: pnpm run fmt:check
+        run: mise run github:workflows:ci:fmt-check
 
       - name: Lint
-        run: pnpm run lint
+        run: mise run github:workflows:ci:lint
 
       - name: Typecheck
-        run: pnpm run typecheck
-
-      - name: Build
-        run: pnpm run build
+        run: mise run github:workflows:ci:typecheck
 
       - name: Test
-        run: pnpm run test
+        run: mise run github:workflows:ci:test
 
       - name: Docs check
-        run: pnpm run docs:check
+        run: mise run github:workflows:ci:docs-check

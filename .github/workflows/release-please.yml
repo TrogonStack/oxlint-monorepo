@@ -21,11 +21,16 @@ jobs:
         with:
           persist-credentials: false
 
+      - name: Install tools
+        uses: jdx/mise-action@2d8d4cafcbd33be2ea37d2b6f5ad595363d1f1ca # v5.1.1
+        with:
+          version: 2026.9.1
+
       # release-please fails when no packages are registered yet, which is the
       # case until the first package lands in packages/@trogonstack/.
       - name: Check for released packages
         id: guard
-        run: echo "configured=$(jq 'length > 0' .github/release-please-manifest.json)" >> "$GITHUB_OUTPUT"
+        run: mise run github:workflows:release-please:check-manifest
 
       - name: Release please
         id: release
@@ -53,17 +58,10 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Install tools
-        uses: jdx/mise-action@2d8d4cafcbd33be2ea37d2b6f5ad595363d1f1ca # v5.1.1
-        with:
-          version: 2026.9.1
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
       - name: Build
-        run: pnpm run build
+        uses: ./.github/actions/build
 
       - name: Publish to npm
-        run: npm publish
-        working-directory: ${{ matrix.path }}
+        env:
+          PACKAGE_PATH: ${{ matrix.path }}
+        run: mise run github:workflows:release-please:publish

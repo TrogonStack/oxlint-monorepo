@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+#MISE description="Verify generated docs and rule examples"
+set -euo pipefail
+
+pnpm run docs:check

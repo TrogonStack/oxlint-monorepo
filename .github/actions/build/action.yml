@@ -1,0 +1,18 @@
+name: Build
+description: Install the pinned toolchain and workspace dependencies, then build every package.
+
+runs:
+  using: composite
+  steps:
+    - name: Install tools
+      uses: jdx/mise-action@2d8d4cafcbd33be2ea37d2b6f5ad595363d1f1ca # v5.1.1
+      with:
+        version: 2026.9.1
+
+    - name: Install dependencies
+      shell: bash
+      run: mise run github:actions:build:install
+
+    - name: Build
+      shell: bash
+      run: mise run github:actions:build:build

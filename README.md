@@ -14,15 +14,6 @@
 | ------------------------------------------------------------------- | -------------------------------------------------------------------- |
 | [`@trogonstack/oxlint-plugin`](packages/@trogonstack/oxlint-plugin) | Oxlint JS plugin with TypeScript type-evidence and UI quality rules. |
 
-## Workspace
+## Contributing
 
-This is a [pnpm](https://pnpm.io/workspaces) monorepo. From the repo root:
-
-```bash
-mise install
-pnpm install
-```
-
-Shared configuration lives at the root: `.oxlintrc.json`, `.oxfmtrc.json`, and `tsconfig.base.json`. Packages extend those rather than redefining them.
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) for checks and how to add a package.
+See [CONTRIBUTING.md](CONTRIBUTING.md).

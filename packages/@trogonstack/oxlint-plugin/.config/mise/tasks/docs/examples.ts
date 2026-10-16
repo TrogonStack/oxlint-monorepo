@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+//MISE description="Lint every rule doc example with the built plugin"
 import { execFile } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import { mkdir, mkdtemp, readdir, readFile, rm, writeFile } from 'node:fs/promises';
@@ -8,7 +10,7 @@ import { promisify } from 'node:util';
 
 const run = promisify(execFile);
 
-const packageDir = fileURLToPath(new URL('../', import.meta.url));
+const packageDir = fileURLToPath(new URL('../../../../', import.meta.url));
 const docsDir = join(packageDir, 'docs/rules');
 const pluginPath = join(packageDir, 'dist/index.js');
 const oxlintPath = join(packageDir, 'node_modules/.bin/oxlint');

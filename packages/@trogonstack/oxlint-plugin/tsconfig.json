@@ -3,5 +3,5 @@
   "compilerOptions": {
     "noEmit": true
   },
-  "include": ["src", "tests", "bin"]
+  "include": ["src", "tests", ".config/mise/tasks"]
 }

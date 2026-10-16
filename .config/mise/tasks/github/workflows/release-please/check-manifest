@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+#MISE description="Report whether any package is registered with release-please"
+set -euo pipefail
+
+echo "configured=$(jq 'length > 0' .github/release-please-manifest.json)" >> "$GITHUB_OUTPUT"
