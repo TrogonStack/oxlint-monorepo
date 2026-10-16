@@ -6,12 +6,14 @@ import { ruleDocsUrl } from '../shared/docs.ts';
 type TypeAssertion = ESTree.TSAsExpression | ESTree.TSTypeAssertion;
 
 const commentOwnerKinds = new Set([
-  'ExpressionStatement',
+  'MethodDefinition',
   'PropertyDefinition',
-  'ReturnStatement',
-  'ThrowStatement',
-  'VariableDeclaration',
+  'TSPropertySignature',
 ]);
+
+function isCommentOwner(node: ESTree.Node): boolean {
+  return commentOwnerKinds.has(node.type) || /(?:Statement|Declaration)$/u.test(node.type);
+}
 
 function isConstAssertion(node: TypeAssertion): boolean {
   return (
@@ -36,7 +38,7 @@ function hasSafetyComment(sourceCode: SourceCode, node: TypeAssertion): boolean 
       current = current.parent;
       continue;
     }
-    if (commentOwnerKinds.has(current.type) || parentType === 'Program') return false;
+    if (isCommentOwner(current) || parentType === 'Program') return false;
     current = current.parent;
   }
 }

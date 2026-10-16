@@ -18,8 +18,21 @@ tester.run(
       '// SAFETY: The parser established the UserId invariant.\nexport const id = value as UserId;',
       '// SAFETY: The parser established the UserId invariant.\nexport let id = value as UserId;',
       '// SAFETY: The parser established the UserId invariant.\nexport default value as UserId;',
+      '// SAFETY: Validation established the UserId invariant.\nif (isUser(value as UserId)) run();',
     ],
     invalid: [
+      {
+        code: '// SAFETY: Unrelated.\nfunction run() {\nif (isUser(value as UserId)) start();\n}',
+        errors: [error],
+      },
+      {
+        code: '// SAFETY: Unrelated.\nclass Store {\nload() {\nwhile (next(value as UserId)) step();\n}\n}',
+        errors: [error],
+      },
+      {
+        code: '// SAFETY: Unrelated.\nfunction run() {\nfor (const id of value as UserId[]) start(id);\n}',
+        errors: [error],
+      },
       { code: 'export const id = value as UserId;', errors: [error] },
       {
         code: '// SAFETY: Unrelated.\nconst other = 1;\nexport const id = value as UserId;',
