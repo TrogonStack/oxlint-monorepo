@@ -35,7 +35,10 @@ Every code block under `## Examples` in `docs/rules/<rule>.md` is linted with th
 5. Add the package to `.github/release-please-config.json` under `packages`, keyed by its path:
 
 ```json
-"packages/@trogonstack/<name>": { "component": "@trogonstack/<name>" }
+"packages/@trogonstack/<name>": {
+  "component": "@trogonstack/<name>",
+  "initial-version": "0.0.1"
+}
 ```
 
 6. Seed its version in `.github/release-please-manifest.json`:

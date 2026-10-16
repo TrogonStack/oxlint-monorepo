@@ -14,7 +14,8 @@
   ],
   "packages": {
     "packages/@trogonstack/oxlint-plugin": {
-      "component": "@trogonstack/oxlint-plugin"
+      "component": "@trogonstack/oxlint-plugin",
+      "initial-version": "0.0.1"
     }
   },
   "plugins": [
