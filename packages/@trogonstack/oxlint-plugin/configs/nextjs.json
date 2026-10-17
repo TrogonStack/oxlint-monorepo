@@ -6,6 +6,7 @@
     "trogonstack/require-client-component-suffix": "error",
     "trogonstack/require-locale-route-parameter": "error",
     "trogonstack/require-server-directives": "error",
-    "trogonstack/no-unjustified-use-client": "error"
+    "trogonstack/no-unjustified-use-client": "error",
+    "trogonstack/no-server-file-suffix": "error"
   }
 }

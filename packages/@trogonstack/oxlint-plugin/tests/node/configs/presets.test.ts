@@ -46,6 +46,7 @@ const FRAMEWORK_ONLY: Record<Preset, string[]> = {
     'require-locale-route-parameter',
     'require-server-directives',
     'no-unjustified-use-client',
+    'no-server-file-suffix',
   ],
   vite: ['require-app-entry-file'],
   expo: ['no-root-assets-directory'],
@@ -351,6 +352,11 @@ describe('configs', () => {
     ]) {
       deepStrictEqual(lint(root, file, 'export const x = 1;\n'), [], file);
     }
+  });
+
+  it('leaves the `.server` suffix to frameworks that give it a meaning', () => {
+    const root = createProject('server-suffix', extending('vite'));
+    deepStrictEqual(lint(root, 'src/app/_services/db.server.ts', 'export const db = 1;\n'), []);
   });
 
   it('still reports non-kebab files that only resemble dynamic segments', () => {
