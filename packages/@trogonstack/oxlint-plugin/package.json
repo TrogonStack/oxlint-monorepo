@@ -49,5 +49,8 @@
   "devDependencies": {
     "oxfmt": "^0.72.0",
     "oxlint": "^1.79.0"
+  },
+  "peerDependencies": {
+    "oxlint": "^1.79.0"
   }
 }
