@@ -35,6 +35,7 @@ jobs:
         run: mise run github:workflows:release-please:check-manifest
 
       - name: Google Cloud auth
+        if: steps.guard.outputs.configured == 'true'
         uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3
         with:
           project_id: ${{ vars.RELEASER_PROJECT_ID }}
@@ -42,6 +43,7 @@ jobs:
 
       - name: Releaser key
         id: releaser_key
+        if: steps.guard.outputs.configured == 'true'
         uses: google-github-actions/get-secretmanager-secrets@bc9c54b29fdffb8a47776820a7d26e77b379d262 # v3.0.0
         with:
           secrets: |-
@@ -49,6 +51,7 @@ jobs:
 
       - name: Releaser token
         id: releaser
+        if: steps.guard.outputs.configured == 'true'
         uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
         with:
           client-id: ${{ vars.RELEASER_APP_CLIENT_ID }}
